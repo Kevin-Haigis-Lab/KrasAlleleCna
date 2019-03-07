@@ -1,2 +1,5 @@
+^data-raw$
+^README\.Rmd$
+^LICENSE\.md$
 ^KrasAlleleCna\.Rproj$
 ^\.Rproj\.user$

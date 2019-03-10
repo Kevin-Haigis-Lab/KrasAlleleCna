@@ -1,5 +1,9 @@
+^\.travis\.yml$
+^docs$
+^_pkgdown\.yml$
 ^data-raw$
 ^README\.Rmd$
+^README\.md$
 ^LICENSE\.md$
 ^KrasAlleleCna\.Rproj$
 ^\.Rproj\.user$

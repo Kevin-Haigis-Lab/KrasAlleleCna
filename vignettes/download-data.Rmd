@@ -21,6 +21,7 @@ library(magrittr)
 library(dplyr)
 library(stringr)
 library(readr)
+library(KrasAlleleCna)
 ```
 
 ## Data Sources
@@ -34,28 +35,22 @@ Tumor CNV data were downloaded from https://gdc.cancer.gov/about-data/publicatio
 
 ## Prepare file name lists using manifest and sample sheet from GDC with "create_file_name_lists.R"
 
-The Manifest and Sample Sheet were downloaded from GDC Data Portal after adding the files to the cart. They were save in "data".
+The Manifest and Sample Sheet were downloaded from GDC Data Portal after adding the files to the cart. They were saved to "data-raw" and turned into RData using "data-raw/tsv_to_RData.R".
 
-```{r datafiles, eval = FALSE}
-samplesheet_dir <- "data/tcga_sample_sheet.txt"
-manifest <- "data/tcga_manifest.txt"
-```
+The sample sheet was loaded (from "data") and filtered for the desired sample types.
 
-The sample sheet was loaded and filtered for the desired sample types.
-
-```{r load_samplesheet, eval = FALSE}
-samplesheet <- read_tsv(samplesheet_dir)
-colnames(samplesheet) <- str_replace_all(colnames(samplesheet), " ", "_") %>%
+```{r load_samplesheet}
+colnames(tcga_sample_sheet) <- str_replace_all(colnames(tcga_sample_sheet), " ", "_") %>%
     str_to_lower()
 
 # Filter for primary tumors samples
-samplesheet %<>%
+tcga_sample_sheet %<>%
     filter(sample_type %in% c("Primary Blood Derived Cancer - Bone Marrow",
                               "Primary Blood Derived Cancer - Peripheral Blood",
                               "Primary Tumor")) %>%
     filter(!str_detect(file_name, "gapfillers")) %>%
     unique()
-samplesheet
+head(tcga_sample_sheet)
 ```
 
 ### Keep only one data file per case ID
@@ -64,34 +59,33 @@ There were some case IDs with more than one file. I used a bucnh of manual filte
 
 I began by gathering the IDs with multiple files.
 
-```{r one_caseid, eval = FALSE}
-ids_table <- table(samplesheet$case_id)
+```{r one_caseid}
+ids_table <- table(tcga_sample_sheet$case_id)
 ids_table <- ids_table[ids_table > 1]
 length(ids_table)
 ```
 
-Only `\r length(ids_table)` samples had more than one file, so this was not a wide-spread problem.
+Only `r length(ids_table)` samples had more than one file, so this was not a wide-spread problem.
 
-```{r hangle_multisamples, eval = FALSE}
-samplesheet <- samplesheet %>%
+```{r hangle_multisamples}
+tcga_sample_sheet <- tcga_sample_sheet %>%
     group_by(case_id) %>%
     mutate(keep = choose_one_filename(file_name)) %>%
     filter(keep == file_name) %>%
     ungroup()
 
 # check that all case_IDs are unique
-uniqueN(samplesheet$case_id) == nrow(samplesheet)
+n_unique(tcga_sample_sheet$case_id) == nrow(tcga_sample_sheet)
 ```
 
 The final list of filenames was saved to "data/tcga_filename_list.txt"
 
 ```{r save_filenamelist, eval = FALSE}
-cat(unlist(samplesheet$file_id),
-    file = "data/tcga_filename_list.txt",
+cat(unlist(tcga_sample_sheet$file_id),
+    file = "data-raw/tcga_filename_list.txt",
     sep = "\n")
 ```
 
-TODO: need to figure out organization strategy for data
 
 
 # TODO:

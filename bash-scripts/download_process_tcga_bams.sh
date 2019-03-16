@@ -11,8 +11,11 @@
 module load gcc samtools/1.9 bcftools/1.9 annovar/20170601
 
 # constants
+# reference genome from TCGA
 TCGA_REF_38=/n/no_backup2/dbmi/park/jc604/databases/reference_genomes/GRCh38.d1.vd1.fa
-GDC_TOKEN=$(<~/gdc_tokens/gdc-user-token.2019-01-08T13_38_07.043Z.txt)
+# read in the GDC token to access the data
+GDC_TOKEN=$(<~/gdc_tokens/gdc-user-token.2019-03-04.txt)
+# location of ANNOVAR databases
 ANNOVAR_DB=/n/no_backup2/dbmi/park/jc604/databases/annovar_db
 
 # get file name to download from GDC
@@ -21,13 +24,13 @@ ANNOVAR_DB=/n/no_backup2/dbmi/park/jc604/databases/annovar_db
 GDC_FILE=$(sed -n "${SLURM_ARRAY_TASK_ID}p" $1)
 
 # other file names
-BAM=tmp/${GDC_FILE}.bam
-CALL_VCF=tmp/${GDC_FILE}_call.vcf
-MPILEUP_VCF=results/mpileup_output/${GDC_FILE}_mpileup.vcf
-AVINPUT=tmp/${GDC_FILE}.avi
-AVOUTPUT=results/annovar_output/${GDC_FILE}
+BAM=tmp-files/${GDC_FILE}.bam
+CALL_VCF=tmp-files/${GDC_FILE}_call.vcf
+MPILEUP_VCF=data-raw/gdc/mpileup_output/${GDC_FILE}_mpileup.vcf
+AVINPUT=tmp-files/${GDC_FILE}.avi
+AVOUTPUT=data-raw/gdc/annovar_output/${GDC_FILE}
 
-# get BAM slice from GDC
+# get BAM slice of KRAS from GDC
 curl \
     --header "X-Auth-Token: $GDC_TOKEN" "https://api.gdc.cancer.gov/slicing/view/${GDC_FILE}?region=chr12:25200000-25250000" \
     --output $BAM
@@ -35,7 +38,7 @@ curl \
 # check if BAM is the correct format
 # else print GDC_FILE to std err
 if [[ "$(file $BAM)" != "${BAM}: gzip compressed data, extra field" ]]; then
-	echo "${GDC_FILE}: downloaded file not a BAM" >> tmp/failed_downloads.txt
+	echo "${GDC_FILE}: downloaded file not a BAM" >> tmp-files/failed_downloads.txt
 	exit
 fi
 

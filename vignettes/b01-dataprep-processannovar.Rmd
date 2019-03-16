@@ -1,0 +1,98 @@
+---
+title: "Parsing ANNOVAR Results"
+author: "Joshua H Cook"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Parsing ANNOVAR Results}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Set up
+
+Load libraries:
+
+```{r load_libs}
+library(knitr)
+library(kableExtra)
+library(dplyr)
+library(tibble)
+library(stringr)
+# library(KrasAlleleCna)
+devtools::load_all()
+```
+
+Establish paths:
+
+```{r make_paths}
+pkg_dir <- system.file(package = "KrasAlleleCna")
+raw_data_dir <- file.path(pkg_dir, "data-raw")
+data_dir <- file.path(pkg_dir, "data")
+```
+
+## Tidy data
+
+ANNOVAR returned a separate file for each tissue sample (stored in "data-raw/gdc/annovar_output").
+
+```{r list_annovar}
+# list all annovar files
+annovar_output_dir <- file.path(raw_data_dir, "gdc", "annovar_output")
+annovar_files <- list.files(annovar_output_dir,
+                            pattern = "hg38_multianno.txt",
+                            full.names = TRUE)
+names(annovar_files) <- basename(annovar_files)
+```
+
+Each file was read in as a tibble and the column `aa_mod` was added as a simpler version of the amino acid mutation. Only the rows with *KRAS* non-synonymous mutation data was kept.
+
+```{r parse_annovar}
+annovar_tib <- lapply(annovar_files, parse_annovar) %>%
+    bind_rows(.id = "file_id") %>%
+    mutate(file_id = str_remove_all(file_id, "\\.hg38_multianno\\.txt")) %>%
+    filter(str_detect(Func.refGene, "exonic") &
+           Gene.refGene == "KRAS" &
+           !(ExonicFunc.refGene %in% c("synonymous SNV")))
+head(annovar_tib)
+```
+
+A quick test to see if any mutations were missing.
+
+```{r check_aamod}
+any(is.na(annovar_tib$aa_mod))
+```
+
+## Add tissue sample information
+
+The ANNOVAR results were annotated with tumor sample data from the sample sheet.
+
+```{r join_samplesheet}
+annovar_results_tib <- left_join(annovar_tib, tidy_tcga_sample_sheet,
+                                 by = "file_id")
+```
+
+## Save *tidy* data
+
+```{r save_annovar}
+save(annovar_tib,
+     file = file.path(data_dir, "annovar_tib.RData"))
+```
+
+### Show results
+
+```{r show_annovar}
+head(annovar_tib)
+```
+
+```{r kable_annovar}
+kable(annovar_tib) %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    scroll_box(width = "500px", height = "200px")
+```

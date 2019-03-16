@@ -2,7 +2,9 @@
 
 export(choose_one_filename)
 export(n_unique)
+export(parse_annovar)
 export(two_filename_handler)
+importFrom(magrittr,"%<>%")
 importFrom(magrittr,"%>%")
 importFrom(stringr,str_detect)
 importFrom(stringr,str_subset)

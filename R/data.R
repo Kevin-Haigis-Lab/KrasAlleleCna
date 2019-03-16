@@ -1,42 +1,50 @@
-#' TCGA Manifest
-#'
-#' Manifest file downloaded from the GDC Data Portal. It contains all raw
-#'     sequencing files available for TCGA-COAD, READ, PAAD, and DLBC, and
-#'     TARGET-AML (not all samples were available from TARGET)
-#'
-#' @format a tibble (1488 x 5)
-#' \describe{
-#'   \item{id}{file ID}
-#'   \item{filename}{filen ame}
-#'   \item{md5}{MD5 value for checking download success}
-#'   \item{size}{file size (bytes(?))}
-#'   \item{state}{internal TCGA information}
-#' }
-#'
-#' @source \url{https://portal.gdc.cancer.gov}
-"tcga_manifest"
-
-
 #' TCGA Sample Sheet
 #'
-#' Contains the information of the files in the manifest.
+#' Contains the information of the files in the manifest. The column names
+#'     were changed to a tidy format (lowercase and spaces)
 #'
 #' @format a tibble (1488 x 5)
 #' \describe{
-#'     \item{File ID}{file ID}
-#'     \item{File Name}{file name}
-#'     \item{Data Category}{data category (eg. reads, mutations, etc.)}
-#'     \item{Data Type}{data type}
-#'     \item{Project ID}{ID of the source project (TCGA-COAD or -READ)}
-#'     \item{Case ID}{case ID}
+#'     \item{file_id}{file ID}
+#'     \item{file_name}{file name}
+#'     \item{data_category}{category of data (are all "Sequencing Reads")}
+#'     \item{data_type}{type of data (are all "Aligned Reads")}
+#'     \item{project_id}{ID of the source project (TCGA-COAD or -READ)}
+#'     \item{case_id}{case ID}
 #' }
 #'
 #' @source \url{https://portal.gdc.cancer.gov}
-"tcga_sample_sheet"
+"tidy_tcga_sample_sheet"
 
-#' Failed GDC Downloads
+
+
+#' ANNOVAR results
 #'
-#' A list of file names where the download from GDC failed
+#' A tibble of the annotation results from ANNOVAR. It was joined with the
+#'     sample information. Get more information on the returned values from
+#'     the \href{http://annovar.openbioinformatics.org/en/latest/}{ANNOVAR documentation}
 #'
-#' @format a character vector
-"failed_downloads"
+#' @format a tibble (411 x 19)
+#' \describe{
+#'     \item{file_id}{file ID}
+#'     \item{Chr}{chromosome}
+#'     \item{Start}{start of variant}
+#'     \item{End}{end of variant}
+#'     \item{Ref}{reference allele}
+#'     \item{Alt}{alternate allele}
+#'     \item{Func.refGene}{where the alteration is}
+#'     \item{Gene.refGene}{gene name}
+#'     \item{GeneDetail.refGene}{}
+#'     \item{ExonicFunc.refGene}{type of mutation}
+#'     \item{AAChange.refGene}{amino acid change}
+#'     \item{aa_mod}{more useable amino acid change}
+#'     \item{file_name}{name of the file}
+#'     \item{data_category}{category of data (are all "Sequencing Reads")}
+#'     \item{data_type}{type of data (are all "Aligned Reads")}
+#'     \item{project_id}{ID of the source project (TCGA-COAD or -READ)}
+#'     \item{case_id}{case_id}
+#'     \item{sample_id}{sample ID}
+#'     \item{sample_type}{from where the sample was taken}
+#' }
+#'
+"annovar_tib"

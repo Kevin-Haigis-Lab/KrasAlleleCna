@@ -1,0 +1,154 @@
+---
+title: "Downloading Data"
+author: "Joshua H. Cook"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Downloading Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Set Up
+
+Load libraries:
+
+```{r load_libs, message = FALSE, warning = FALSE}
+library(magrittr)
+library(dplyr)
+library(stringr)
+library(readr)
+devtools::load_all()
+```
+
+Establish paths:
+
+```{r make_paths}
+pkg_dir <- system.file(package = "KrasAlleleCna")
+raw_data_dir <- file.path(pkg_dir, "data-raw")
+data_dir <- file.path(pkg_dir, "data")
+```
+
+## Data Sources
+
+BAM files were download from Genomic Data Commons (GDC): TCGA-COAD, TCGA-READ, TCGA-AML, TCGA-PAAD, TCGA-DLBC
+
+Tumor purity scores were downloaded from https://gdc.cancer.gov/about-data/publications/pancanatlas and labeled "ABSOLUTE purity/ploidy file - TCGA_mastercalls.abs_tables_JSedit.fixed.txt"
+
+Tumor CNV data were downloaded from https://gdc.cancer.gov/about-data/publications/pancanatlas and labeled "Copy Number - broad.mit.edu_PANCAN_Genome_Wide_SNP_6_whitelisted.seg"
+
+All downloaded files were downloaded to "data-raw/".
+
+
+
+## Prepare file name lists using manifest and sample sheet from GDC
+
+The Manifest and Sample Sheet were downloaded from GDC Data Portal after adding the files to the cart. They were saved to "data-raw/".
+
+The sample sheet was loaded and filtered for the desired sample types.
+
+```{r load_samplesheet}
+# read in tsv and adjust column names
+tcga_sample_sheet <- read_tsv(file.path(raw_data_dir, "tcga_sample_sheet.tsv"))
+colnames(tcga_sample_sheet) <- str_replace_all(colnames(tcga_sample_sheet),
+                                               " ", "_") %>%
+    str_to_lower()
+# Filter for primary tumors samples
+tcga_sample_sheet %<>%
+    filter(sample_type %in% c("Primary Blood Derived Cancer - Bone Marrow",
+                              "Primary Blood Derived Cancer - Peripheral Blood",
+                              "Primary Tumor")) %>%
+    filter(!str_detect(file_name, "gapfillers")) %>%
+    unique()
+head(tcga_sample_sheet)
+```
+
+### Keep only one data file per case ID
+
+There were some case IDs with more than one file. I used a bucnh of manual filters to eventually only have one file per sample. You can see these filters in "R/download-createfilenamelists.R".
+
+I began by gathering the IDs with multiple files.
+
+```{r one_caseid}
+ids_table <- table(tcga_sample_sheet$case_id)
+ids_table <- ids_table[ids_table > 1]
+length(ids_table)
+```
+
+Only `r length(ids_table)` samples had more than one file, so this was not a wide-spread problem.
+
+```{r handle_multisamples}
+tcga_sample_sheet %<>%
+    group_by(case_id) %>%
+    mutate(keep = choose_one_filename(file_name)) %>%
+    filter(keep == file_name) %>%
+    ungroup()
+
+# check that all case_IDs are unique
+n_unique(tcga_sample_sheet$case_id) == nrow(tcga_sample_sheet)
+```
+
+The final list of filenames was saved to "data/tcga_filename_list.txt"
+
+```{r save_filenamelist, eval = FALSE}
+cat(unlist(tcga_sample_sheet$file_id),
+    file = file.path(raw_data_dir, "tcga_filename_list.txt"),
+    sep = "\n")
+```
+
+
+## Download and processing BAM files
+
+This script is submitted as a batch array, passing as the first argument a file listing the file names from GDC (created in above). Below is the step-by-step process in 'download_process_tcga_bams.sh':
+
+1. the region surround KRAS is downloaded from the GDC API 
+2. `samtools index` indexes the BAM file
+3. `bcftools mpileup | bcftools call` makes a VCF of variants in KRAS
+4. `bcftools mpileup` creates an annotated VCF
+5. `annovar` annotates the VCF file to find mutations in KRAS
+
+The script was run as a batch array using the following command.
+
+```bash
+sbatch --array=1-$(wc -l < data-raw/tcga_filename_list.txt) \
+    bash-scripts/download_process_tcga_bams.sh \
+    data-raw/tcga_filename_list.txt
+```
+
+### Failed downloads
+
+Some files failed to download, returning "internal server error" or "" instead of the BAM file. The file names of the files that failed were stored to "data-raw/failed_downloads.txt" and turned into a "RData" file "failed_downloads.RData". 
+
+```{r read_faildwnlds}
+failed_downloads <- readLines("failed_downloads.txt")
+failed_downloads <- str_split_fixed(unlist(failed_downloads), ":", 2)[, 1]
+```
+
+I added this information to the `downloaded` column of the sample sheet tibble before saving the final data table to "data/"
+
+```{r save_faildwnlds}
+tcga_sample_sheet %<>% 
+    mutate(downloaed = !(file_id %in% failed_downloads))
+save(tcga_sample_sheet,
+     file= file.path(data_dir, "tidy_tcga_sample_sheet.RData"))
+```
+
+Below is a table of the number of failed downloads per TCGA project.
+
+```{r table_faildwnlds}
+tcga_sample_sheet %>%
+    filter(!downloaded) %>%
+    group_by(project_id) %>%
+    summarise(num_failed_downloaded = n_distinct(file_id)) %>%
+    kable() %>%
+    kable_styling(bootstrap_options = c("striped", "hover"),
+                  full_width = FALSE,
+                  position = "left")
+```

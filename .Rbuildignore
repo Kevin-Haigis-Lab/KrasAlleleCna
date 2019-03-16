@@ -8,3 +8,5 @@
 ^KrasAlleleCna\.Rproj$
 ^\.Rproj\.user$
 ^bash-scripts$
+^tmp-files$
+^array_job_logs$

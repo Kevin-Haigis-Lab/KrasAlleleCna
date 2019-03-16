@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TCGA Manifest — tcga_manifest • KrasAlleleCna</title>
+<title>Failed GDC Downloads — failed_downloads • KrasAlleleCna</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,9 @@
 
 
 
-<meta property="og:title" content="TCGA Manifest — tcga_manifest" />
+<meta property="og:title" content="Failed GDC Downloads — failed_downloads" />
 
-<meta property="og:description" content="Manifest file downloaded from the GDC Data Portal. It contains all raw
-    sequencing files available for TCGA-COAD, READ, PAAD, and DLBC, and
-    TARGET-AML (not all samples were available from TARGET)" />
+<meta property="og:description" content="A list of file names where the download from GDC failed" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -111,34 +109,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>TCGA Manifest</h1>
+    <h1>Failed GDC Downloads</h1>
     
-    <div class="hidden name"><code>tcga_manifest.Rd</code></div>
+    <div class="hidden name"><code>failed_downloads.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Manifest file downloaded from the GDC Data Portal. It contains all raw
-    sequencing files available for TCGA-COAD, READ, PAAD, and DLBC, and
-    TARGET-AML (not all samples were available from TARGET)</p>
+    <p>A list of file names where the download from GDC failed</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>tcga_manifest</span></pre>
+    <pre class="usage"><span class='no'>failed_downloads</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>a tibble (1488 x 5)</p><dl class='dl-horizontal'>
-  <dt>id</dt><dd><p>file ID</p></dd>
-  <dt>filename</dt><dd><p>filen ame</p></dd>
-  <dt>md5</dt><dd><p>MD5 value for checking download success</p></dd>
-  <dt>size</dt><dd><p>file size (bytes(?))</p></dd>
-  <dt>state</dt><dd><p>internal TCGA information</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p><a href='https://portal.gdc.cancer.gov'>https://portal.gdc.cancer.gov</a></p>
+    <p>a character vector</p>
     
 
   </div>
@@ -147,8 +133,6 @@
     <ul class="nav nav-pills nav-stacked">
       
       <li><a href="#format">Format</a></li>
-
-      <li><a href="#source">Source</a></li>
           </ul>
 
   </div>

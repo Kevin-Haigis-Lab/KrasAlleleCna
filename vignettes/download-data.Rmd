@@ -1,10 +1,10 @@
 ---
-title: "VDownloading Data"
+title: "Downloading Data"
 author: "Joshua H. Cook"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Downloading Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -101,8 +101,18 @@ This script is submitted as a batch array, passing as the first argument a file 
 The script was run as a batch array using the following command.
 
 ```bash
-sbatch --array=1-$(wc -l < input/tcga_filename_list.txt)%700 \
+sbatch --array=1-$(wc -l < data-raw/tcga_filename_list.txt) \
     bash-scripts/download_process_tcga_bams.sh \
     data-raw/tcga_filename_list.txt
 ```
 
+### Failed downloads
+
+Some files failed to download, returning "internal server error" instead of the BAM file. The file names of the files that failed were stored to "data-raw/failed_downloads.txt" and turned into a "RData" file "failed_downloads.RData". 
+
+```{r failed_dwnlds}
+tcga_sample_sheet %>% 
+    filter(file_id %in% failed_downloads) %>%
+    pull(project_id) %>%
+    table()
+```

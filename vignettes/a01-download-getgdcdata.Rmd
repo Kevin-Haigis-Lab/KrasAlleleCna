@@ -25,16 +25,15 @@ library(magrittr)
 library(dplyr)
 library(stringr)
 library(readr)
-# library(KrasAlleleCna)
-devtools::load_all()
+library(KrasAlleleCna)
 ```
 
 Establish paths:
 
 ```{r make_paths}
 pkg_dir <- system.file(package = "KrasAlleleCna")
-raw_data_dir <- file.path(pkg_dir, "data-raw")
-data_dir <- file.path(pkg_dir, "data")
+extdata_dir <- system.file("extdata", package = "KrasAlleleCna")
+data_dir <- system.file("data", package = "KrasAlleleCna")
 ```
 
 ## Data Sources
@@ -57,7 +56,7 @@ The sample sheet was loaded and filtered for the desired sample types.
 
 ```{r load_samplesheet}
 # read in tsv and adjust column names
-tcga_sample_sheet <- read_tsv(file.path(raw_data_dir, "tcga_sample_sheet.tsv"))
+tcga_sample_sheet <- read_tsv(file.path(extdata_dir, "tcga_sample_sheet.tsv"))
 colnames(tcga_sample_sheet) <- str_replace_all(colnames(tcga_sample_sheet),
                                                " ", "_") %>%
     str_to_lower()
@@ -100,7 +99,7 @@ The final list of filenames was saved to "data/tcga_filename_list.txt"
 
 ```{r save_filenamelist}
 cat(unlist(tcga_sample_sheet$file_id),
-    file = file.path(raw_data_dir, "tcga_filename_list.txt"),
+    file = file.path(extdata_dir, "tcga_filename_list.txt"),
     sep = "\n")
 ```
 
@@ -128,7 +127,7 @@ sbatch --array=1-$(wc -l < data-raw/tcga_filename_list.txt) \
 Some files failed to download, returning "internal server error" or "" instead of the BAM file. The file names of the files that failed were stored to "data-raw/failed_downloads.txt" and turned into a "RData" file "failed_downloads.RData". 
 
 ```{r read_faildwnlds}
-failed_downloads <- readLines(file.path(raw_data_dir, "failed_downloads.txt"))
+failed_downloads <- readLines(file.path(extdata_dir, "failed_downloads.txt"))
 failed_downloads <- str_split_fixed(unlist(failed_downloads), ":", 2)[, 1]
 ```
 

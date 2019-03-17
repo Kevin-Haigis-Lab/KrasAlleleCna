@@ -1,0 +1,5 @@
+Chr	Start	End	Ref	Alt	Func.refGene	Gene.refGene	GeneDetail.refGene	ExonicFunc.refGene	AAChange.refGene
+chr12	25209871	25209871	C	T	exonic	KRAS	NA	nonsynonymous SNV	KRAS:NM_004985:exon5:c.G491A:p.R164Q
+chr12	25209920	25209920	C	T	intronic	KRAS	NA	NA	NA
+chr12	25225522	25225522	T	C	intronic	KRAS	NA	NA	NA
+chr12	25233129	25233129	C	A	intronic	KRAS	NA	NA	NA

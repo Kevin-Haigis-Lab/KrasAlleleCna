@@ -26,16 +26,15 @@ library(kableExtra)
 library(dplyr)
 library(tibble)
 library(stringr)
-# library(KrasAlleleCna)
-devtools::load_all()
+library(KrasAlleleCna)
 ```
 
 Establish paths:
 
 ```{r make_paths}
 pkg_dir <- system.file(package = "KrasAlleleCna")
-raw_data_dir <- file.path(pkg_dir, "data-raw")
-data_dir <- file.path(pkg_dir, "data")
+extdata_dir <- system.file("extdata", package = "KrasAlleleCna")
+data_dir <- system.file("data", package = "KrasAlleleCna")
 ```
 
 ## Tidy data
@@ -44,7 +43,7 @@ ANNOVAR returned a separate file for each tissue sample (stored in "data-raw/gdc
 
 ```{r list_annovar}
 # list all annovar files
-annovar_output_dir <- file.path(raw_data_dir, "gdc", "annovar_output")
+annovar_output_dir <- file.path(extdata_dir, "gdc", "annovar_output")
 annovar_files <- list.files(annovar_output_dir,
                             pattern = "hg38_multianno.txt",
                             full.names = TRUE)
@@ -81,8 +80,7 @@ annovar_results_tib <- left_join(annovar_tib, tidy_tcga_sample_sheet,
 ## Save *tidy* data
 
 ```{r save_annovar}
-save(annovar_tib,
-     file = file.path(data_dir, "annovar_tib.RData"))
+save(annovar_tib, file = file.path(data_dir, "annovar_tib.RData"))
 ```
 
 ### Show results

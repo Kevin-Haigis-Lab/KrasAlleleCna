@@ -1,0 +1,6 @@
+Chr	Start	End	Ref	Alt	Func.refGene	Gene.refGene	GeneDetail.refGene	ExonicFunc.refGene	AAChange.refGene
+chr12	25202394	25202396	AGG	-	intronic	ETFRF1	NA	NA	NA
+chr12	25202983	25202983	C	G	intronic	ETFRF1	NA	NA	NA
+chr12	25214904	25214904	A	C	intronic	KRAS	NA	NA	NA
+chr12	25217140	25217140	C	T	intronic	KRAS	NA	NA	NA
+chr12	25218528	25218528	C	T	intronic	KRAS	NA	NA	NA

@@ -17,7 +17,7 @@
     \item{GeneDetail.refGene}{}
     \item{ExonicFunc.refGene}{type of mutation}
     \item{AAChange.refGene}{amino acid change}
-    \item{aa_mod}{more useable amino acid change}
+    \item{aa_mod}{more usable amino acid change}
     \item{file_name}{name of the file}
     \item{data_category}{category of data (are all "Sequencing Reads")}
     \item{data_type}{type of data (are all "Aligned Reads")}

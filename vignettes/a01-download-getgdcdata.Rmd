@@ -72,7 +72,7 @@ head(tcga_sample_sheet)
 
 ### Keep only one data file per case ID
 
-There were some case IDs with more than one file. I used a bucnh of manual filters to eventually only have one file per sample. You can see these filters in "R/download-createfilenamelists.R".
+There were some case IDs with more than one file. I used a bunch of manual filters to eventually only have one file per sample. You can see these filters in "R/download-createfilenamelists.R".
 
 I began by gathering the IDs with multiple files.
 

@@ -7,10 +7,7 @@ library(dplyr)
 library(magrittr)
 
 test_that("ANNOVAR files are properly tidied up", {
-    test_files <- list.files("test_annovar_files", full.name = TRUE)
-    test_tibbles <- purrr::map(test_files, read_tsv)
-    names(test_tibbles) <- basename(test_files)
-
+    test_tibbles <- readRDS("test_annovar_tibbles.rds")
     expect_true(all(purrr::map_lgl(test_tibbles, is_tibble)))
 
     tidy_tibbles <- purrr::map(test_tibbles, parse_annovar_mutation)

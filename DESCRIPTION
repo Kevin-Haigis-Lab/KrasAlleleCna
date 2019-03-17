@@ -28,6 +28,8 @@ Imports:
     kableExtra
 Suggests: 
     testthat,
-    rmarkdown
+    rmarkdown,
+    spelling
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
+Language: en-US

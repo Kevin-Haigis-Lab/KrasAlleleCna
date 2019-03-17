@@ -1,16 +1,17 @@
-#' Parse ANNOVAR files
+#' Parse ANNOVAR mutation
 #'
-#' Reads and parses an ANNOVAR file
+#' Reads and parses an ANNOVAR file to return the amino acid change in a more
+#'     understandable way in the column named \code{aa_mod}.
 #'
-#' @param fname ANNOVAR file name
+#' @param anno_tib tibble of the ANNOVAR file
 #'
-#' @return a tibble of the results. IF the file was empty, an empty tibble
-#'     was returned
+#' @return Returns the tibble, checking if it is empty.
+#'     If the file was empty, an empty tibble is returned. A column is added
+#'     that has a simple version of the amino acid change \code{aa_mod}.
 #'
 #' @importFrom magrittr %>% %<>%
-#' @export parse_annovar
-parse_annovar <- function(fname) {
-    anno_tib <- readr::read_tsv(fname, col_type = "cddccccccc")
+#' @export parse_annovar_mutation
+parse_annovar_mutation <- function(anno_tib) {
     if (nrow(anno_tib) == 0) {
         # if empty, set to all NAs and continue in pipeline
         anno_tib <- tibble::tibble(Chr = NA,
@@ -32,3 +33,6 @@ parse_annovar <- function(fname) {
                aa_mod = ifelse(is.na(Chr), "WT", aa_mod))
     return(anno_tib)
 }
+
+# for "parse_annovar_mutation"
+utils::globalVariables(c("AAChange.refGene", "Chr", "aa_mod"), add = TRUE)

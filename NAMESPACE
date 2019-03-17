@@ -2,7 +2,7 @@
 
 export(choose_one_filename)
 export(n_unique)
-export(parse_annovar)
+export(parse_annovar_mutation)
 export(two_filename_handler)
 importFrom(magrittr,"%<>%")
 importFrom(magrittr,"%>%")

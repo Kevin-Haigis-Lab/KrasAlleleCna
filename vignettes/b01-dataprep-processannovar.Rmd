@@ -10,10 +10,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
 # Set up
@@ -39,21 +36,17 @@ data_dir <- system.file("data", package = "KrasAlleleCna")
 
 ## Tidy data
 
-ANNOVAR returned a separate file for each tissue sample (stored in "data-raw/gdc/annovar_output").
+ANNOVAR returned a separate file for each tissue sample (stored in "data-raw/gdc/annovar_output"). In "data-raw/handle_annovar.R", each file was read in as a tibble, and a list of tibbles was saved to "inst/extdata/".
 
 ```{r list_annovar}
-# list all annovar files
-annovar_output_dir <- file.path(extdata_dir, "gdc", "annovar_output")
-annovar_files <- list.files(annovar_output_dir,
-                            pattern = "hg38_multianno.txt",
-                            full.names = TRUE)
-names(annovar_files) <- basename(annovar_files)
+# list of all annovar files
+annovar_data <- readRDS(file.path(extdata_dir, "annovar_output_list.rds"))
 ```
 
 Each file was read in as a tibble and the column `aa_mod` was added as a simpler version of the amino acid mutation. Only the rows with *KRAS* non-synonymous mutation data was kept.
 
 ```{r parse_annovar}
-annovar_tib <- lapply(annovar_files, parse_annovar) %>%
+annovar_tib <- lapply(annovar_data, parse_annovar_mutation) %>%
     bind_rows(.id = "file_id") %>%
     mutate(file_id = str_remove_all(file_id, "\\.hg38_multianno\\.txt")) %>%
     filter(str_detect(Func.refGene, "exonic") &

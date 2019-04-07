@@ -1,10 +1,10 @@
 ---
-title: "Parsing mpileup Results"
+title: "B.02 - Parsing mpileup Results"
 author: "Joshua H Cook"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Parsing mpileup Results}
+  %\VignetteIndexEntry{B.02 - Parsing mpileup Results}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

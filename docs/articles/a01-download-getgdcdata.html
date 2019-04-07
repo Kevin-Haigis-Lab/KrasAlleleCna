@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Downloading Data • KrasAlleleCna</title>
+<title>A.01 - Downloading Data • KrasAlleleCna</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Downloading Data">
+<script src="../pkgdown.js"></script><meta property="og:title" content="A.01 - Downloading Data">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -53,13 +53,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/a01-download-getgdcdata.html">Downloading Data</a>
+      <a href="../articles/a01-download-getgdcdata.html">A.01 - Downloading Data</a>
     </li>
     <li>
-      <a href="../articles/b01-dataprep-processannovar.html">Parsing ANNOVAR Results</a>
+      <a href="../articles/b01-dataprep-processannovar.html">B.01 - Parsing ANNOVAR Results</a>
     </li>
     <li>
-      <a href="../articles/b02-dataprep-processmpileup.html">Parsing mpileup Results</a>
+      <a href="../articles/b02-dataprep-processmpileup.html">B.02 - Parsing mpileup Results</a>
     </li>
   </ul>
 </li>
@@ -79,10 +79,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Downloading Data</h1>
+      <h1>A.01 - Downloading Data</h1>
                         <h4 class="author">Joshua H. Cook</h4>
             
-            <h4 class="date">2019-03-17</h4>
+            <h4 class="date">2019-04-07</h4>
       
       
       <div class="hidden name"><code>a01-download-getgdcdata.Rmd</code></div>
@@ -155,7 +155,7 @@
 <div id="keep-only-one-data-file-per-case-id" class="section level3">
 <h3 class="hasAnchor">
 <a href="#keep-only-one-data-file-per-case-id" class="anchor"></a>Keep only one data file per case ID</h3>
-<p>There were some case IDs with more than one file. I used a bucnh of manual filters to eventually only have one file per sample. You can see these filters in “R/download-createfilenamelists.R”.</p>
+<p>There were some case IDs with more than one file. I used a bunch of manual filters to eventually only have one file per sample. You can see these filters in “R/download-createfilenamelists.R”.</p>
 <p>I began by gathering the IDs with multiple files.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ids_table &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(tcga_sample_sheet<span class="op">$</span>case_id)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">ids_table &lt;-<span class="st"> </span>ids_table[ids_table <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>]</a>

@@ -1,10 +1,10 @@
 ---
-title: "Parsing ANNOVAR Results"
+title: "B.01 - Parsing ANNOVAR Results"
 author: "Joshua H Cook"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Parsing ANNOVAR Results}
+  %\VignetteIndexEntry{B.01 - Parsing ANNOVAR Results}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

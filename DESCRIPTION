@@ -29,7 +29,8 @@ Imports:
 Suggests: 
     testthat,
     rmarkdown,
-    spelling
+    spelling,
+    covr
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Language: en-US

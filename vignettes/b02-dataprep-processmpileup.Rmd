@@ -10,9 +10,82 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-    collapse = TRUE,
-    comment = "#>"
-)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+# Set up
+
+Load libraries
+
+```{r load_libs}
+library(dplyr)
+library(tibble)
+library(stringr)
+# library(KrasAlleleCna)
+devtools::load_all()
+```
+
+Establish path variables:
+
+```{r make_paths}
+pkg_dir <- system.file(package = "KrasAlleleCna")
+extdata_dir <- system.file("extdata", package = "KrasAlleleCna")
+data_dir <- system.file("data", package = "KrasAlleleCna")
+```
+
+## Tidy VCF files
+
+'mpileup' returned a separate file for each tissue sample (stored in "data-raw/gdc/mpileup\_output"). In "data-raw/handle\_mpileup.R", each file was read in as a tibble, and a list of tibbles was saved to "inst/extdata/".
+
+This list of tibbles was read in and was combined into a single tibble, adding a new column with the file name. The `filename` column was parsed to create `file_id`.
+
+```{r read_vcfnames}
+# a list of all mpileup files
+mpileup_data <- readRDS(file.path(extdata_dir, "mpileup_output_list.rds")) %>%
+	bind_rows(.id = "filename") %>%
+	mutate(file_id = str_remove_all(filename, "_mpileup.vcf$"))
+```
+
+I only kept the VCF files for which the ANNOVAR data was successfully collected and contained a *KRAS* mutation.
+
+```{r overlap_mpileupannovar}
+# list of file IDs (after removing the "mpileup.vcf" suffix)
+mpileup_ids <- unique(unlist(mpileup_data$file_id))
+# number of shared IDs
+sum(mpileup_ids %in% unlist(annovar_tib$file_id))
+# number of VCF files removed in this step
+sum(!(mpileup_ids %in% unlist(annovar_tib$file_id)))
+```
+
+```{r filter_mpileupfiles}
+mpileup_data <- mpileup_data %>%
+	filter(file_id %in% annovar_tib$file_id)
+```
+
+The downstream steps only required the total number of reads and the number of mutant reads. These values were isolated into columns `total_num_reads` and `num_mut_reads`, respectively.
+
+```{r get_importantinfo}
+mpileup_data <- mpileup_data %>%
+	mutate(total_num_reads = as.numeric(num_high_qual_bases),
+               num_mut_reads = str_split_fixed(alleleic_depths,
+                                               ",", 2)[, 2]) %>%
+	select(file_id, start, total_num_reads, num_mut_reads) %>%
+	filter(!(str_detect(num_mut_reads, ",") | num_mut_reads == "")) %>%
+	mutate(num_mut_reads = as.numeric(num_mut_reads),
+	       total_num_reads = as.numeric(total_num_reads))
+mpileup_data
+```
+
+The last step was to merge the read-depth with the ANNOVAR mutation calls.
+
+```{r merge_mpileupannovar}
+allele_depth_tib <- left_join(annovar_tib, mpileup_data,
+                              by = c("file_id" = "file_id", "Start" = "start"))
+```
+
+```{r kable_depthtib, include=FALSE}
+knitr::kable(allele_depth_tib) %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    kableExtra::scroll_box(width = "500px", height = "200px")
 ```
 

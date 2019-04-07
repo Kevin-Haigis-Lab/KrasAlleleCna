@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
@@ -83,7 +83,7 @@ allele_depth_tib <- left_join(annovar_tib, mpileup_data,
                               by = c("file_id" = "file_id", "Start" = "start"))
 ```
 
-```{r kable_depthtib, include=FALSE}
+```{r kable_depthtib, echo=FALSE}
 knitr::kable(allele_depth_tib) %>%
     kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
     kableExtra::scroll_box(width = "500px", height = "200px")

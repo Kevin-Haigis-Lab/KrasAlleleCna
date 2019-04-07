@@ -98,20 +98,9 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(knitr)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(kableExtra)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; The following object is masked from 'package:kableExtra':</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;     group_rows</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; The following objects are masked from 'package:stats':</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;     filter, lag</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; The following objects are masked from 'package:base':</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;     intersect, setdiff, setequal, union</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tibble)</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stringr)</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(KrasAlleleCna)</a></code></pre></div>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tibble)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stringr)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(KrasAlleleCna)</a></code></pre></div>
 <p>Establish paths:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">pkg_dir &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="dt">package =</span> <span class="st">"KrasAlleleCna"</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">extdata_dir &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="dt">package =</span> <span class="st">"KrasAlleleCna"</span>)</a>
@@ -119,7 +108,7 @@
 <div id="tidy-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tidy-data" class="anchor"></a>Tidy data</h2>
-<p>ANNOVAR returned a separate file for each tissue sample (stored in “data-raw/gdc/annovar_output”). In “data-raw/handle_annovar.R”, each file was read in as a tibble, and a list of tibbles was saved to “inst/extdata/”.</p>
+<p>‘ANNOVAR’ returned a separate file for each tissue sample (stored in “data-raw/gdc/annovar_output”). In “data-raw/handle_annovar.R”, each file was read in as a tibble, and a list of tibbles was saved to “inst/extdata/”.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># list of all annovar files</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">annovar_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRDS">readRDS</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(extdata_dir, <span class="st">"annovar_output_list.rds"</span>))</a></code></pre></div>
 <p>Each file was read in as a tibble and the column <code>aa_mod</code> was added as a simpler version of the amino acid mutation. Only the rows with <em>KRAS</em> non-synonymous mutation data was kept.</p>

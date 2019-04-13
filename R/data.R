@@ -42,9 +42,82 @@
 #'     \item{data_category}{category of data (are all "Sequencing Reads")}
 #'     \item{data_type}{type of data (are all "Aligned Reads")}
 #'     \item{project_id}{ID of the source project (TCGA-COAD or -READ)}
-#'     \item{case_id}{case_id}
+#'     \item{case_id}{case ID}
 #'     \item{sample_id}{sample ID}
 #'     \item{sample_type}{from where the sample was taken}
 #' }
 #'
 "annovar_tib"
+
+
+#' mpileup and ANNOVAR data merged
+#'
+#' A tibble of both mpileup and ANNOVAr data - thus it holds the number of
+#'     reads at each mutations
+#'
+#' @format a tibble (190 x 23)
+#' \describe{
+#'     \item{file_id}{file ID}
+#'     \item{Chr}{chromosome}
+#'     \item{Start}{start of variant}
+#'     \item{End}{end of variant}
+#'     \item{Ref}{reference allele}
+#'     \item{Alt}{alternate allele}
+#'     \item{Func.refGene}{where the alteration is}
+#'     \item{Gene.refGene}{gene name}
+#'     \item{GeneDetail.refGene}{}
+#'     \item{ExonicFunc.refGene}{type of mutation}
+#'     \item{AAChange.refGene}{amino acid change}
+#'     \item{aa_mod}{more usable amino acid change}
+#'     \item{file_name}{name of the file}
+#'     \item{data_category}{category of data (are all "Sequencing Reads")}
+#'     \item{data_type}{type of data (are all "Aligned Reads")}
+#'     \item{project_id}{ID of the source project (TCGA-COAD or -READ)}
+#'     \item{case_id}{case ID}
+#'     \item{sample_id}{sample ID}
+#'     \item{sample_type}{from where the sample was taken}
+#'     \item{keep}{to keep or not}
+#'     \item{downloaded}{successfully downloaded data (all \code{TRUE})
+#'     \item{total_num_reads}{total number of reads at site}
+#'     \item{num_mut_reads}{number of mutant reads}
+#' }
+#'
+"allele_depth_tib"
+
+
+#' All data files merged
+#'
+#' @description Contains ANNOVAR mutation calls with the number of reads from
+#'     'mpileup', copy number of the locus, and purity of the tumor sample.
+#'     The allele-specific copy number was calculated from those values for
+#'     each KRAS allele.
+#'
+#' @format a tibble (182 x 25)
+#' \describe{
+#'     \item{common_id}{ID shared by all data tables}
+#'     \item{Chr}{chromosome}
+#'     \item{Start}{start of variant}
+#'     \item{End}{end of variant}
+#'     \item{aa_mod}{more usable amino acid change}
+#'     \item{total_num_reads}{total number of reads at this site}
+#'     \item{num_mut_reads}{number of mutant reads}
+#'     \item{Ref}{reference allele}
+#'     \item{Alt}{alternate allele}
+#'     \item{Func.refGene}{where the alteration is}
+#'     \item{Gene.refGene}{gene name}
+#'     \item{ExonicFunc.refGene}{type of mutation}
+#'     \item{file_name}{name of the file}
+#'     \item{file_id}{file ID}
+#'     \item{project_id}{ID of the source project (TCGA-COAD or -READ)}
+#'     \item{case_id}{case ID}
+#'     \item{sample_id}{sample ID}
+#'     \item{sample_type}{from where the sample was taken}
+#'     \item{CNV_start}{start of the CNV call}
+#'     \item{CNV_end}{end of the CNV call}
+#'     \item{copy_number}{copy number at the locus}
+#'     \item{purity}{purity of the tumor sample}
+#'     \item{cn_mut}{copy number of the mutant allele}
+#'     \item{copy_number_adj}{copy number of the locus, adjusted for purity}
+#'     \item{cn_wt}{copy number of the WT allele}
+#' }
+"allele_data_filt"

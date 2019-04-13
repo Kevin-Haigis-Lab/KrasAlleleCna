@@ -22,7 +22,7 @@
     \item{data_category}{category of data (are all "Sequencing Reads")}
     \item{data_type}{type of data (are all "Aligned Reads")}
     \item{project_id}{ID of the source project (TCGA-COAD or -READ)}
-    \item{case_id}{case_id}
+    \item{case_id}{case ID}
     \item{sample_id}{sample ID}
     \item{sample_type}{from where the sample was taken}
 }}

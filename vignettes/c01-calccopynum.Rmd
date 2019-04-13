@@ -1,0 +1,35 @@
+---
+title: "B.02 - Calculate Allele-specfic Copy Number"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{B.02 - Calculate Allele-specfic Copy Number}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+ 	collapse = TRUE,
+ 	comment = "#>"
+)
+```
+
+# Set up
+
+Load libraries
+
+```{r load_libs}
+library(dplyr)
+library(tibble)
+library(stringr)
+# library(KrasAlleleCna)
+devtools::load_all()
+```
+
+Establish path variables:
+
+```{r make_paths}
+pkg_dir <- system.file(package = "KrasAlleleCna")
+extdata_dir <- system.file("extdata", package = "KrasAlleleCna")
+data_dir <- system.file("data", package = "KrasAlleleCna")
+```

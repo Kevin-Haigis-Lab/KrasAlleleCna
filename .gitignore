@@ -80,5 +80,4 @@ README.html
 
 
 # TOO LARGE
-tcga_copynumber.tsv
-
+inst/extdata/tcga_copynumber.tsv

@@ -77,3 +77,8 @@ data-raw/*
 array_job_logs/*
 tmp-files/*
 README.html
+
+
+# TOO LARGE
+tcga_copynumber.tsv
+

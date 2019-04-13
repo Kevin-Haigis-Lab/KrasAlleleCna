@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
  	collapse = TRUE,
- 	comment = "#>"
+ 	comment = "#>",
+ 	eval = FALSE
 )
 ```
 
@@ -20,10 +21,12 @@ Load libraries
 
 ```{r load_libs}
 library(dplyr)
+library(readr)
 library(tibble)
 library(stringr)
-# library(KrasAlleleCna)
-devtools::load_all()
+library(magrittr)
+library(KrasAlleleCna)
+# devtools::load_all()
 ```
 
 Establish path variables:
@@ -32,4 +35,158 @@ Establish path variables:
 pkg_dir <- system.file(package = "KrasAlleleCna")
 extdata_dir <- system.file("extdata", package = "KrasAlleleCna")
 data_dir <- system.file("data", package = "KrasAlleleCna")
+```
+
+Below are the *KRAS* gene locations (it is on the negative strand).
+
+```{r define_kraslocation}
+KRAS_LOWER <- 25204789  # end of gene
+KRAS_UPPER <- 25251003  # start of gene
+```
+
+
+# Load and prepare data
+
+The tumor purity was calculated by TCGA and downloaded from https://gdc.cancer.gov/about-data/publications/pancanatlas where it was labeled as "ABSOLUTE purity/ploidy file - TCGA\_mastercalls.abs\_tables\_JSedit.fixed.txt". The only data required for downstream analysis is the ID (below, extracted from the `sample` column) and the purity.
+
+```{r load_tumorpurity}
+purity_tib <- read_tsv(file.path(extdata_dir, "tcga_purity_ploidy.tsv")) %>%
+    mutate(common_id = str_sub(sample, 1, 16)) %>%
+    select(common_id, purity)
+purity_tib
+```
+
+Tumor CNV data were downloaded from https://gdc.cancer.gov/about-data/publications/pancanatlas and labeled "Copy Number - broad.mit.edu\_PANCAN\_Genome\_Wide\_SNP\_6\_whitelisted.seg".
+
+```{r load_cancercnv}
+cnv_tib <- read_tsv(file.path(extdata_dir, "tcga_copynumber.tsv"))
+```
+
+*KRAS* is on chromosome 12 in humans, so only data for that chromomsome was retained. The `common_id` was extracted as above and the `start` and `stop` columns for the CNV calls were renamed to be more specific to remove ambiguity after merging data sets, later. Fainlly, the copy number was calculated from the `Segment_Mean`; I found out how to do this [here](https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/CNV_Pipeline/): "The GDC further transforms these copy number values into segment mean values, which are equal to log2(copy-number/ 2). Diploid regions will have a segment mean of zero, amplified regions will have positive values, and deletions will have negative values."
+
+```{r prep_cancercnv}
+cnv_tib %<>%
+    filter(Chromosome == 12) %>%
+    mutate(common_id = str_sub(Sample, 1, 16)) %>%
+    dplyr::rename(CNV_start = Start,
+                  CNV_end = End) %>%
+    mutate(copy_number = 2^(Segment_Mean + 1)) %>%
+    select(common_id, CNV_start, CNV_end, copy_number)
+cnv_tib
+```
+
+Both the purity and copy number data was joined to the ANNOVAR and mpileup results.
+
+```{r mergeto_annovar}
+allele_data <- allele_depth_tib %>%
+    dplyr::mutate(common_id = sample_id) %>%
+    select(common_id, Chr, Start, End, aa_mod, total_num_reads, num_mut_reads,
+           Ref, Alt, Func.refGene, Gene.refGene, ExonicFunc.refGene, file_name,
+           file_id, project_id, case_id, sample_id, sample_type) %>%
+    left_join(cnv_tib, by = "common_id") %>%
+    left_join(purity_tib, by = "common_id") %>%
+    unique()
+```
+
+
+# Gather CNV values
+
+Some samples had multiple measures of copy number along *KRAS*. The following section selects a single value for each sample. It isn't pretty, but gets the job done.
+
+An empty tibble was created with the correct column names for which the data will be add to row-wise
+
+```{r empty_tib}
+allele_data_filt <- allele_data %>% slice(0)
+```
+
+```{r get_cnv}
+for (fi in unique(allele_data$file_id)) {
+	fi <- "00b7ee04-b97b-49ee-b27b-13f6fb981fec"
+    # temp tib with this loops data
+    tt <- allele_data %>%
+        filter(file_id == fi)
+    # if WT:
+    if (tt$aa_mod[[1]] == "WT") {
+        # bool for if CNV probe straddles or cuts KRAS
+        tt %<>%
+            mutate(straddle_kras = (CNV_start < KRAS_LOWER &
+                                    KRAS_UPPER < CNV_end),
+                   cuts_kras = ((CNV_start < KRAS_LOWER &
+                                CNV_end < KRAS_UPPER) |
+                               (KRAS_LOWER < CNV_start &
+                                KRAS_UPPER < CNV_end)),
+                   dist_to_kras = min(abs(CNV_start - KRAS_LOWER),
+                                      abs(CNV_start - KRAS_UPPER),
+                                      abs(CNV_end - KRAS_LOWER),
+                                      abs(CNV_end - KRAS_UPPER)))
+        # prefer straddle
+        if (any(tt$straddle_kras, na.rm = TRUE)) {
+            tt %<>%
+                filter(straddle_kras)
+        # else use probes that cut KRAS
+        } else if (any(tt$cuts_kras, na.rm = TRUE)) {
+            tt %<>%
+                filter(cuts_kras)
+        } else {
+            message("insufficient filters")
+        }
+        # standardize tt to be rbind
+        tt  %<>%
+            mutate(copy_number = mean(copy_number)) %>%
+            slice(1) %>%
+            select(-c("straddle_kras", "cuts_kras", "dist_to_kras"))
+    } else {  # if mutant:
+        # keep CNV probe that contains the mutation
+        tt %<>%
+            filter(CNV_start < Start & Start < CNV_end) %>%
+            mutate(copy_number = mean(copy_number)) %>%
+            slice(1)
+        if (nrow(tt) == 0) {
+            # if no probe contained it, just return the original data and warn
+            tt <- allele_data %>%
+                filter(file_id == fi) %>%
+                slice(1)
+            warning(paste("Mutant with no rows:", fi))
+        }
+    }
+    # compile tt into the final tibble
+    allele_data_filt <- dplyr::bind_rows(allele_data_filt, tt)
+}
+```
+
+Check if any mutants have missing data.
+
+```{r print_missingdata}
+allele_data_filt %>%
+    filter(is.na(purity) & aa_mod != "WT") %>%
+    select(aa_mod, project_id)
+```
+
+
+# Calculate allele specific copy number
+
+Finally, the allele specific copy number was calculated. The equation was taken from Eq. (2) in Stephens et al. 2012, Nature Letter: 
+
+    n_mut = (r/R) * (1/p) * (p * n_locus + 2 * (1 - p))
+
+where
+    n_mut = copy number of the mutant allele
+    r = number of reads with a mutation
+    R = number of reads total from the locus
+    p = fraction of tumor cells (i.e. purity)
+    n_locus = copy number of the locus
+
+
+```{r calc_copynum}
+allele_data_filt %<>%
+    mutate(cn_mut = (num_mut_reads / (total_num_reads * purity)) *
+           (purity * copy_number + (2 * (1 - purity))),
+           copy_number_adj = (1 / purity) * (copy_number - (2 * (1 - purity))),
+           cn_wt = ifelse(aa_mod == "WT",
+                          copy_number_adj,
+                          copy_number_adj - cn_mut))
+```
+
+```{r save_results}
+save(allele_data_filt, file = file.path(data_dir, "allele_data_filt.RData"))
 ```

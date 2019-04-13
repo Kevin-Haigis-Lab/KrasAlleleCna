@@ -24,6 +24,7 @@ library(dplyr)
 library(tibble)
 library(stringr)
 library(KrasAlleleCna)
+# devtools::load_all()
 ```
 
 Establish paths:
@@ -61,20 +62,13 @@ A quick test to see if any mutations were missing.
 any(is.na(annovar_tib$aa_mod))
 ```
 
-## Add tissue sample information
-
-The ANNOVAR results were annotated with tumor sample data from the sample sheet.
-
-```{r join_samplesheet}
-annovar_results_tib <- left_join(annovar_tib, tidy_tcga_sample_sheet,
-                                 by = "file_id")
-```
 
 ## Save *tidy* data
 
 ```{r save_annovar}
 save(annovar_tib, file = file.path(data_dir, "annovar_tib.RData"))
 ```
+
 
 ### Show results
 

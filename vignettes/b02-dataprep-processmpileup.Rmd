@@ -22,6 +22,7 @@ library(dplyr)
 library(tibble)
 library(stringr)
 library(KrasAlleleCna)
+# devtools::load_all()
 ```
 
 Establish path variables:
@@ -80,6 +81,7 @@ The last step was to merge the read-depth with the ANNOVAR mutation calls.
 ```{r merge_mpileupannovar}
 allele_depth_tib <- left_join(annovar_tib, mpileup_data,
                               by = c("file_id" = "file_id", "Start" = "start"))
+save(allele_depth_tib, file = file.path(data_dir, "allele_depth_tib.RData"))
 ```
 
 ```{r kable_depthtib, echo=FALSE}

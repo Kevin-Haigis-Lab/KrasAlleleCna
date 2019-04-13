@@ -21,8 +21,7 @@ Load libraries
 library(dplyr)
 library(tibble)
 library(stringr)
-# library(KrasAlleleCna)
-devtools::load_all()
+library(KrasAlleleCna)
 ```
 
 Establish path variables:

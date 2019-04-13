@@ -1,0 +1,5 @@
+articles:
+  - title: "A.01 - Downloading Data"
+  desc: >
+    Downloading BAM slices of the *KRAS* region data from GDC
+  

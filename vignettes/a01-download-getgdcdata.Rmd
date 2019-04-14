@@ -136,8 +136,7 @@ I added this information to the `downloaded` column of the sample sheet tibble b
 ```{r save_faildwnlds}
 tidy_tcga_sample_sheet <- tcga_sample_sheet %>% 
     mutate(downloaded = !(file_id %in% failed_downloads))
-save(tidy_tcga_sample_sheet,
-     file= file.path(data_dir, "tidy_tcga_sample_sheet.RData"))
+usethis::use_data(tidy_tcga_sample_sheet, overwrite = TRUE)
 ```
 
 Below is a table of the number of failed downloads per TCGA project.

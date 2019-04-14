@@ -69,6 +69,8 @@
 #'     \item{ExonicFunc.refGene}{type of mutation}
 #'     \item{AAChange.refGene}{amino acid change}
 #'     \item{aa_mod}{more usable amino acid change}
+#'     \item{total_num_reads}{total number of reads}
+#'     \item{num_mut_reads}{number of mutant allele reads}
 #'     \item{file_name}{name of the file}
 #'     \item{data_category}{category of data (are all "Sequencing Reads")}
 #'     \item{data_type}{type of data (are all "Aligned Reads")}
@@ -76,10 +78,8 @@
 #'     \item{case_id}{case ID}
 #'     \item{sample_id}{sample ID}
 #'     \item{sample_type}{from where the sample was taken}
-#'     \item{keep}{to keep or not}
-#'     \item{downloaded}{successfully downloaded data (all \code{TRUE})
-#'     \item{total_num_reads}{total number of reads at site}
-#'     \item{num_mut_reads}{number of mutant reads}
+#'     \item{keep}{which bam file to keep}
+#'     \item{downloaded}{logical for if the file was downloaded successfully}
 #' }
 #'
 "allele_depth_tib"

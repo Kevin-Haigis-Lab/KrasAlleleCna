@@ -42,8 +42,8 @@ This list of tibbles was read in and was combined into a single tibble, adding a
 ```{r read_vcfnames}
 # a list of all mpileup files
 mpileup_data <- readRDS(file.path(extdata_dir, "mpileup_output_list.rds")) %>%
-	bind_rows(.id = "filename") %>%
-	mutate(file_id = str_remove_all(filename, "_mpileup.vcf$"))
+    bind_rows(.id = "filename") %>%
+    mutate(file_id = str_remove_all(filename, "_mpileup.vcf$"))
 ```
 
 I only kept the VCF files for which the ANNOVAR data was successfully collected and contained a *KRAS* mutation.
@@ -59,20 +59,20 @@ sum(!(mpileup_ids %in% unlist(annovar_tib$file_id)))
 
 ```{r filter_mpileupfiles}
 mpileup_data <- mpileup_data %>%
-	filter(file_id %in% annovar_tib$file_id)
+    filter(file_id %in% annovar_tib$file_id)
 ```
 
 The downstream steps only required the total number of reads and the number of mutant reads. These values were isolated into columns `total_num_reads` and `num_mut_reads`, respectively.
 
 ```{r get_importantinfo}
 mpileup_data <- mpileup_data %>%
-	mutate(total_num_reads = as.numeric(num_high_qual_bases),
+    mutate(total_num_reads = as.numeric(num_high_qual_bases),
                num_mut_reads = str_split_fixed(alleleic_depths,
                                                ",", 2)[, 2]) %>%
-	select(file_id, start, total_num_reads, num_mut_reads) %>%
-	filter(!(str_detect(num_mut_reads, ",") | num_mut_reads == "")) %>%
-	mutate(num_mut_reads = as.numeric(num_mut_reads),
-	       total_num_reads = as.numeric(total_num_reads))
+    select(file_id, start, total_num_reads, num_mut_reads) %>%
+    filter(!(str_detect(num_mut_reads, ",") | num_mut_reads == "")) %>%
+    mutate(num_mut_reads = as.numeric(num_mut_reads),
+           total_num_reads = as.numeric(total_num_reads))
 mpileup_data
 ```
 
@@ -80,8 +80,10 @@ The last step was to merge the read-depth with the ANNOVAR mutation calls.
 
 ```{r merge_mpileupannovar}
 allele_depth_tib <- left_join(annovar_tib, mpileup_data,
-                              by = c("file_id" = "file_id", "Start" = "start"))
-save(allele_depth_tib, file = file.path(data_dir, "allele_depth_tib.RData"))
+                              by = c("file_id" = "file_id",
+                                     "Start" = "start")) %>%
+    left_join(tidy_tcga_sample_sheet, by = "file_id")
+usethis::use_data(allele_depth_tib, overwrite = TRUE)
 ```
 
 ```{r kable_depthtib, echo=FALSE}

@@ -26,7 +26,6 @@ library(tibble)
 library(stringr)
 library(magrittr)
 library(KrasAlleleCna)
-# devtools::load_all()
 ```
 
 Establish path variables:
@@ -187,5 +186,5 @@ allele_data_filt %<>%
 ```
 
 ```{r save_results}
-save(allele_data_filt, file = file.path(data_dir, "allele_data_filt.RData"))
+usethis::use_data(allele_data_filt, overwrite = TRUE)
 ```

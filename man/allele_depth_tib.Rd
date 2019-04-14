@@ -4,7 +4,32 @@
 \name{allele_depth_tib}
 \alias{allele_depth_tib}
 \title{mpileup and ANNOVAR data merged}
-\format{An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 190 rows and 23 columns.}
+\format{a tibble (190 x 23)
+\describe{
+    \item{file_id}{file ID}
+    \item{Chr}{chromosome}
+    \item{Start}{start of variant}
+    \item{End}{end of variant}
+    \item{Ref}{reference allele}
+    \item{Alt}{alternate allele}
+    \item{Func.refGene}{where the alteration is}
+    \item{Gene.refGene}{gene name}
+    \item{GeneDetail.refGene}{}
+    \item{ExonicFunc.refGene}{type of mutation}
+    \item{AAChange.refGene}{amino acid change}
+    \item{aa_mod}{more usable amino acid change}
+    \item{total_num_reads}{total number of reads}
+    \item{num_mut_reads}{number of mutant allele reads}
+    \item{file_name}{name of the file}
+    \item{data_category}{category of data (are all "Sequencing Reads")}
+    \item{data_type}{type of data (are all "Aligned Reads")}
+    \item{project_id}{ID of the source project (TCGA-COAD or -READ)}
+    \item{case_id}{case ID}
+    \item{sample_id}{sample ID}
+    \item{sample_type}{from where the sample was taken}
+    \item{keep}{which bam file to keep}
+    \item{downloaded}{logical for if the file was downloaded successfully}
+}}
 \usage{
 allele_depth_tib
 }

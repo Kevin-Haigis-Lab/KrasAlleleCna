@@ -85,10 +85,3 @@ allele_depth_tib <- left_join(annovar_tib, mpileup_data,
     left_join(tidy_tcga_sample_sheet, by = "file_id")
 usethis::use_data(allele_depth_tib, overwrite = TRUE)
 ```
-
-```{r kable_depthtib, echo=FALSE}
-knitr::kable(allele_depth_tib) %>%
-    kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
-    kableExtra::scroll_box(width = "500px", height = "200px")
-```
-

@@ -9,8 +9,9 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>",
+    eval = TRUE
 )
 ```
 
@@ -24,8 +25,10 @@ library(readr)
 library(tibble)
 library(stringr)
 library(magrittr)
-library(KrasAlleleCna)
-# devtools::load_all()
+library(gridExtra)
+library(ggplot2)
+# library(KrasAlleleCna)
+devtools::load_all()
 ```
 
 Establish path variables:
@@ -34,24 +37,6 @@ Establish path variables:
 pkg_dir <- system.file(package = "KrasAlleleCna")
 extdata_dir <- system.file("extdata", package = "KrasAlleleCna")
 data_dir <- system.file("data", package = "KrasAlleleCna")
-```
-
-I also defined a theme that I used for many of the plots, below.
-
-```{r jhctheme}
-theme_jhc <- function(vertical_grid = FALSE) {
-    if (!vertical_grid) {
-        theme_classic() %+replace%
-        theme(panel.grid.major.y = element_line(color = "grey60"),
-              panel.grid.minor.y = element_line(color = "grey75", linetype = 2),
-              plot.title = element_text(hjust = 0.5, face = "bold", size = 14))
-    } else {
-        theme_classic() %+replace%
-        theme(panel.grid.major.y = element_line(color = "grey60"),
-              panel.grid.major.x = element_line(color = "grey60"),
-              plot.title = element_text(hjust = 0.5, face = "bold", size = 14))
-    }
-}
 ```
 
 
@@ -66,20 +51,130 @@ cn_tib <- allele_data_filt %>%
     mutate(allele_count = n_distinct(common_id)) %>%
     ungroup() %>%
     mutate(cn_mut = ifelse(cn_mut < 0, 0, cn_mut),
-           cn_wt = ifelse(cn_wt < 0, 0, cn_wt))
+           cn_wt = ifelse(cn_wt < 0, 0, cn_wt),
+           codon = as.numeric(str_extract(aa_mod, "[:digit:]+")))
 ```
 
+
+# Plotting
+
+## Copy number of mutant alleles
+
 ```{r plot1}
-allele_data_filt %>%
-    filter(project_id == "TCGA-COADREAD" &
-           aa_mod != "WT" &
-           n_percancer > 3 &
-           purity >= 0.25) %>%
+cn_tib %>%
+    mutate(aa_mod = forcats::fct_reorder(aa_mod, codon)) %>%
     ggplot(aes(x = aa_mod, y = cn_mut)) +
-    geom_jitter(width = 0.1, height = 0) +
+    geom_jitter(aes(color = as.factor(codon)), width = 0.1, height = 0) +
     labs(x = "",
          y = "Mutant allele copy number",
-         title = "COADREAD Mutant Allele Copy Number") +
-    theme_jhc()
+         title = "COADREAD Mutant Allele Copy Number",
+         color = "codon") +
+    theme_classic() +
+    theme(panel.grid.major.y = element_line(color = "grey60"),
+          panel.grid.minor.y = element_line(color = "grey75", linetype = 2),
+          plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+          axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+## Lateral plot between A146T and G12D mutant and WT alleles
+
+```{r lateralplot}
+# colors
+red_col <- "red"
+blue_col <- "blue"
+
+cn_tib %>%
+    filter(aa_mod %in% c("A146T", "G12D")) %>%
+    mutate(diff = cn_mut - cn_wt) %>%
+    ggplot() +
+    facet_grid(. ~ aa_mod) +
+    geom_segment(aes(x = "mutant", xend = "wild type",
+                     y = cn_mut, yend = cn_wt,
+                     color = diff)) +
+    geom_point(aes(x = "mutant", y = cn_mut, color = diff), size = 1) +
+    geom_point(aes(x = "wild type", y = cn_wt, color = diff), size = 1) +
+    scale_color_gradient(low = blue_col, high = red_col) +
+    theme(panel.background = element_rect(fill = "white"),
+          panel.grid.major = element_line(color = "grey85"),
+          legend.key.height = unit(0.2, "in"),
+          legend.key.width = unit(0.1, "in"),
+          axis.ticks = element_line("grey85"),
+          strip.background = element_blank(),
+          strip.text.x = element_blank()) +
+    labs(x = "allele", y = "copy number",
+         title = "Copy number of both alleles in KRAS mutants",
+         color = "CN difference")
+```
+
+
+## Genotype heatmap
+
+```{r genotypeheatmap}
+a146t_heat <- cn_tib %>%
+    filter(aa_mod == "A146T") %>%
+    mutate(cn_mut_round = round(cn_mut),
+           cn_wt_round = round(cn_wt)) %>%
+    group_by(aa_mod, cn_mut_round, cn_wt_round) %>%
+    summarise(num = n_distinct(common_id)) %>%
+    ungroup() %>%
+    group_by(aa_mod) %>%
+    mutate(freq = num / n()) %>%
+    ungroup() %>%
+    na.omit() %>%
+    ggplot(aes(x = cn_wt_round, y = cn_mut_round)) +
+    geom_tile(aes(fill = freq)) +
+    geom_text(aes(label = num), color = "black") +
+    scale_fill_gradient(low = blue_col, high = red_col) +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_line(color = "black", size = 0.5),
+          legend.position = "none",
+          panel.background = element_rect(fill = "white"),
+          panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+          axis.ticks = element_blank(),
+          axis.title = element_blank(),
+          axis.text = element_blank()) +
+    labs(x = "WT allele copy number",
+         y = "mutant allele copy number") +
+    scale_y_continuous(expand = c(0, 0),
+                       breaks = c(0, 1, 2, 3),
+                       minor_breaks = seq(0.5, 3.5, 0.5)) +
+    scale_x_continuous(expand = c(0, 0),
+                       breaks = c(0, 1, 2, 3),
+                       minor_breaks = seq(0.5, 3.5, 0.5))
+g12d_heat <- cn_tib %>%
+    filter(aa_mod == "G12D") %>%
+    mutate(cn_mut_round = round(cn_mut),
+           cn_wt_round = round(cn_wt)) %>%
+    group_by(aa_mod, cn_mut_round, cn_wt_round) %>%
+    summarise(num = n_distinct(common_id)) %>%
+    ungroup() %>%
+    group_by(aa_mod) %>%
+    mutate(freq = num / n()) %>%
+    ungroup() %>%
+    na.omit() %>%
+    ggplot(aes(x = cn_wt_round, y = cn_mut_round)) +
+    geom_tile(aes(fill = freq)) +
+    geom_text(aes(label = num), color = "black") +
+    scale_fill_gradient(low = blue_col, high = red_col) +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_line(color = "black", size = 0.5),
+          legend.position = "none",
+          panel.background = element_rect(fill = "white"),
+          panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+          axis.ticks = element_blank(),
+          axis.title = element_blank(),
+          axis.text = element_blank()) +
+    labs(x = "WT allele copy number",
+         y = "mutant allele copy number") +
+    scale_y_continuous(expand = c(0, 0),
+                       breaks = c(0, 1, 2, 3),
+                       minor_breaks = seq(0.5, 3.5, 0.5)) +
+    scale_x_continuous(expand = c(0, 0),
+                       breaks = c(0, 1, 2, 3),
+                       minor_breaks = seq(0.5, 3.5, 0.5))
+a146t_grob <- ggplotGrob(a146t_heat)
+g12d_grob <- ggplotGrob(g12d_heat)
+grid.arrange(a146t_grob, g12d_grob, nrow = 2, widths = c(2, 3))
 ```
 

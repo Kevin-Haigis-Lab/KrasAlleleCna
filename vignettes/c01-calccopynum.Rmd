@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
  	collapse = TRUE,
  	comment = "#>",
- 	eval = FALSE
+ 	eval = TRUE
 )
 ```
 
@@ -101,7 +101,6 @@ allele_data_filt <- allele_data %>% slice(0)
 
 ```{r get_cnv}
 for (fi in unique(allele_data$file_id)) {
-	fi <- "00b7ee04-b97b-49ee-b27b-13f6fb981fec"
     # temp tib with this loops data
     tt <- allele_data %>%
         filter(file_id == fi)

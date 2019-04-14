@@ -27,7 +27,9 @@ Imports:
     devtools,
     knitr,
     kableExtra,
-    usethis
+    usethis,
+    gridExtra,
+    forcats
 Suggests: 
     testthat,
     rmarkdown,

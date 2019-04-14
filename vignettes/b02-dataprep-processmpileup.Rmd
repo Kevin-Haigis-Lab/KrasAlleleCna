@@ -17,7 +17,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 
 Load libraries
 
-```{r load_libs}
+```{r load_libs, warning=FALSE, message=FALSE}
 library(dplyr)
 library(tibble)
 library(stringr)

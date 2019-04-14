@@ -1,8 +1,8 @@
 ---
-title: "D01 - Plot Allele-specific Copy Number Results"
+title: "D.01 - Plot Allele-specific Copy Number Results"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{D01 - Plot Allele-specific Copy Number Results}
+  %\VignetteIndexEntry{D.01 - Plot Allele-specific Copy Number Results}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 Load libraries
 
-```{r load_libs}
+```{r load_libs, warning=FALSE, message=FALSE}
 library(dplyr)
 library(readr)
 library(tibble)
@@ -27,22 +27,12 @@ library(stringr)
 library(magrittr)
 library(gridExtra)
 library(ggplot2)
-# library(KrasAlleleCna)
-devtools::load_all()
+library(KrasAlleleCna)
 ```
-
-Establish path variables:
-
-```{r make_paths}
-pkg_dir <- system.file(package = "KrasAlleleCna")
-extdata_dir <- system.file("extdata", package = "KrasAlleleCna")
-data_dir <- system.file("data", package = "KrasAlleleCna")
-```
-
 
 # Data Preparation
 
-Per the scope of this study, only the COAD and READ data were retained. The number of samples with each allele were counted. Finally, the rare negative numbers were set to 0.
+Per the scope of this study, only the COAD and READ data were further analyzed. The number of samples with each allele were counted. Finally, the rare negative numbers were set to 0.
 
 ```{r adjust_data}
 cn_tib <- allele_data_filt %>%
@@ -60,7 +50,9 @@ cn_tib <- allele_data_filt %>%
 
 ## Copy number of mutant alleles
 
-```{r plot1}
+The following plot shows the copy number for all mutant *KRAS* alleles detected. The coloration is associated with the codon of the mutation. Note, this is the copy number of the mutant allele, thus not including the other allele of the patient.
+
+```{r plot1, warning=FALSE}
 cn_tib %>%
     mutate(aa_mod = forcats::fct_reorder(aa_mod, codon)) %>%
     ggplot(aes(x = aa_mod, y = cn_mut)) +
@@ -79,7 +71,9 @@ cn_tib %>%
 
 ## Lateral plot between A146T and G12D mutant and WT alleles
 
-```{r lateralplot}
+The following plot examines the copy number alterations of the mutant and WT alleles of tumor amples with either *KRAS* G12d and A146T mutations. Each point represents an allele, either mutant or WT for samples with either mutation of interest. The y-axis is the copy number of the allele. Two points connected by a line are from the same tumor sample. The coloration is correlated to the difference between the mutant and WT allele in the sample. Thus, the more red, the greater the mutant allele copy number is compared to the WT allele copy number.
+
+```{r lateralplot, warning=FALSE}
 # colors
 red_col <- "red"
 blue_col <- "blue"
@@ -110,71 +104,53 @@ cn_tib %>%
 
 ## Genotype heatmap
 
+The plot below shows the genotypes of the tumor samples with either *KRAS* A146T or G12D mutations. It is a heatmap to highlight the more frequent genotype for each set of mutants. The WT allele copy number is shown on the x-axis and the mutant allele copy number is shown on the y-axis.
+
+The follow chunk is a function to which `"A146T"` and `"G12D"` are passed as `allele`.
+
+```{r plotgenotypeheatmap}
+plot_genotype_heatmap <- function(tib, allele) {
+    hm <- tib %>%
+        filter(aa_mod == !!allele) %>%
+        mutate(cn_mut_round = round(cn_mut),
+               cn_wt_round = round(cn_wt)) %>%
+        group_by(aa_mod, cn_mut_round, cn_wt_round) %>%
+        summarise(num = n_distinct(common_id)) %>%
+        ungroup() %>%
+        group_by(aa_mod) %>%
+        mutate(freq = num / n()) %>%
+        ungroup() %>%
+        na.omit() %>%
+        ggplot(aes(x = cn_wt_round, y = cn_mut_round)) +
+        geom_tile(aes(fill = freq)) +
+        geom_label(aes(label = num),
+                   fill = "grey35", color = "white",
+                   fontface = "bold", size = 5) +
+        scale_fill_gradient(low = blue_col, high = red_col) +
+        theme(panel.grid.major = element_blank(),
+              panel.grid.minor = element_line(color = "black",
+                                              size = 0.5),
+              legend.position = "none",
+              panel.background = element_rect(fill = "white"),
+              panel.border = element_rect(color = "black",
+                                          fill = NA,
+                                          size = 0.5),
+              axis.ticks = element_blank()) +
+        labs(title = paste("Genotype heatmap for", allele, "mutants"),
+             x = "WT allele copy number",
+             y = "mutant allele copy number") +
+        scale_y_continuous(expand = c(0, 0),
+                           breaks = c(0, 1, 2, 3),
+                           minor_breaks = seq(0.5, 3.5, 0.5)) +
+        scale_x_continuous(expand = c(0, 0),
+                           breaks = c(0, 1, 2, 3),
+                           minor_breaks = seq(0.5, 3.5, 0.5))
+    return(hm)
+}
+```
+
 ```{r genotypeheatmap}
-a146t_heat <- cn_tib %>%
-    filter(aa_mod == "A146T") %>%
-    mutate(cn_mut_round = round(cn_mut),
-           cn_wt_round = round(cn_wt)) %>%
-    group_by(aa_mod, cn_mut_round, cn_wt_round) %>%
-    summarise(num = n_distinct(common_id)) %>%
-    ungroup() %>%
-    group_by(aa_mod) %>%
-    mutate(freq = num / n()) %>%
-    ungroup() %>%
-    na.omit() %>%
-    ggplot(aes(x = cn_wt_round, y = cn_mut_round)) +
-    geom_tile(aes(fill = freq)) +
-    geom_text(aes(label = num), color = "black") +
-    scale_fill_gradient(low = blue_col, high = red_col) +
-    theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_line(color = "black", size = 0.5),
-          legend.position = "none",
-          panel.background = element_rect(fill = "white"),
-          panel.border = element_rect(color = "black", fill = NA, size = 0.5),
-          axis.ticks = element_blank(),
-          axis.title = element_blank(),
-          axis.text = element_blank()) +
-    labs(x = "WT allele copy number",
-         y = "mutant allele copy number") +
-    scale_y_continuous(expand = c(0, 0),
-                       breaks = c(0, 1, 2, 3),
-                       minor_breaks = seq(0.5, 3.5, 0.5)) +
-    scale_x_continuous(expand = c(0, 0),
-                       breaks = c(0, 1, 2, 3),
-                       minor_breaks = seq(0.5, 3.5, 0.5))
-g12d_heat <- cn_tib %>%
-    filter(aa_mod == "G12D") %>%
-    mutate(cn_mut_round = round(cn_mut),
-           cn_wt_round = round(cn_wt)) %>%
-    group_by(aa_mod, cn_mut_round, cn_wt_round) %>%
-    summarise(num = n_distinct(common_id)) %>%
-    ungroup() %>%
-    group_by(aa_mod) %>%
-    mutate(freq = num / n()) %>%
-    ungroup() %>%
-    na.omit() %>%
-    ggplot(aes(x = cn_wt_round, y = cn_mut_round)) +
-    geom_tile(aes(fill = freq)) +
-    geom_text(aes(label = num), color = "black") +
-    scale_fill_gradient(low = blue_col, high = red_col) +
-    theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_line(color = "black", size = 0.5),
-          legend.position = "none",
-          panel.background = element_rect(fill = "white"),
-          panel.border = element_rect(color = "black", fill = NA, size = 0.5),
-          axis.ticks = element_blank(),
-          axis.title = element_blank(),
-          axis.text = element_blank()) +
-    labs(x = "WT allele copy number",
-         y = "mutant allele copy number") +
-    scale_y_continuous(expand = c(0, 0),
-                       breaks = c(0, 1, 2, 3),
-                       minor_breaks = seq(0.5, 3.5, 0.5)) +
-    scale_x_continuous(expand = c(0, 0),
-                       breaks = c(0, 1, 2, 3),
-                       minor_breaks = seq(0.5, 3.5, 0.5))
-a146t_grob <- ggplotGrob(a146t_heat)
-g12d_grob <- ggplotGrob(g12d_heat)
-grid.arrange(a146t_grob, g12d_grob, nrow = 2, widths = c(2, 3))
+plot_genotype_heatmap(cn_tib, "A146T")
+plot_genotype_heatmap(cn_tib, "G12D")
 ```
 

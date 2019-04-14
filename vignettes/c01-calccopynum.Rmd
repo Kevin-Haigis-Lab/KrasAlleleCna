@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 Load libraries
 
-```{r load_libs}
+```{r load_libs, warning=FALSE, message=FALSE}
 library(dplyr)
 library(readr)
 library(tibble)
@@ -55,13 +55,9 @@ purity_tib <- read_tsv(file.path(extdata_dir, "tcga_purity_ploidy.tsv")) %>%
 purity_tib
 ```
 
-Tumor CNV data were downloaded from https://gdc.cancer.gov/about-data/publications/pancanatlas and labeled "Copy Number - broad.mit.edu\_PANCAN\_Genome\_Wide\_SNP\_6\_whitelisted.seg".
+Tumor CNV data were downloaded from https://gdc.cancer.gov/about-data/publications/pancanatlas and labeled "Copy Number - broad.mit.edu\_PANCAN\_Genome\_Wide\_SNP\_6\_whitelisted.seg" (Due to file size restrictions, "tcga_copynumber.tsv" is available in a compressed for in "inst/extdata/", and was loaded into "data" for use in the package using `usethis::use_data()`.)
 
-```{r load_cancercnv}
-cnv_tib <- read_tsv(file.path(extdata_dir, "tcga_copynumber.tsv"))
-```
-
-*KRAS* is on chromosome 12 in humans, so only data for that chromomsome was retained. The `common_id` was extracted as above and the `start` and `stop` columns for the CNV calls were renamed to be more specific to remove ambiguity after merging data sets, later. Fainlly, the copy number was calculated from the `Segment_Mean`; I found out how to do this [here](https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/CNV_Pipeline/): "The GDC further transforms these copy number values into segment mean values, which are equal to log2(copy-number/ 2). Diploid regions will have a segment mean of zero, amplified regions will have positive values, and deletions will have negative values."
+*KRAS* is on chromosome 12 in humans, so only data for that chromomsome was retained. The `common_id` was extracted as above and the `start` and `stop` columns for the CNV calls were renamed to be more specific to remove ambiguity after merging data sets, later. Finally, the copy number was calculated from the `Segment_Mean`; I found out how to do this [here](https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/CNV_Pipeline/): "The GDC further transforms these copy number values into segment mean values, which are equal to **log2(copy-number/ 2)**. Diploid regions will have a segment mean of zero, amplified regions will have positive values, and deletions will have negative values."
 
 ```{r prep_cancercnv}
 cnv_tib %<>%

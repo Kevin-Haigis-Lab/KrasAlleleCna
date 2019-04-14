@@ -1,8 +1,8 @@
 ---
-title: "B.02 - Calculate Allele-specfic Copy Number"
+title: "C.01 - Calculate Allele-specfic Copy Number"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{B.02 - Calculate Allele-specfic Copy Number}
+  %\VignetteIndexEntry{C.01 - Calculate Allele-specfic Copy Number}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -1,0 +1,23 @@
+reference:
+  - title: "Data"
+  desc: >
+    Data files used in the analysis.
+  contents:
+    - annovar_tib
+    - tidy_tcga_sample_sheet
+    - allele_depth_tib
+    - allele_data_filt
+  
+  - title: "Reading data files"
+  desc: >
+    Functions for rading in files.
+  contents:
+    - parse_vcf
+    - parse_annovar_mutation
+    - choose_one_filename
+    - two_filename_handler
+    - three_filename_handler
+    
+  - title: "General utilities"
+  contents:
+    - n_unique

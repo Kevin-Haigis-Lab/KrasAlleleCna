@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parse a VCF file — parse_vcf • KrasAlleleCna</title>
+<title>All data files merged — allele_data_filt • KrasAlleleCna</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Parse a VCF file — parse_vcf" />
+<meta property="og:title" content="All data files merged — allele_data_filt" />
 
-<meta property="og:description" content="Parse the read-depth information of a VCF file." />
+<meta property="og:description" content="Contains ANNOVAR mutation calls with the number of reads from
+    'mpileup', copy number of the locus, and purity of the tumor sample.
+    The allele-specific copy number was calculated from those values for
+    each KRAS allele." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,47 +124,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parse a VCF file</h1>
+    <h1>All data files merged</h1>
     
-    <div class="hidden name"><code>parse_vcf.Rd</code></div>
+    <div class="hidden name"><code>allele_data_filt.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Parse the read-depth information of a VCF file.</p>
+    <p>Contains ANNOVAR mutation calls with the number of reads from
+    'mpileup', copy number of the locus, and purity of the tumor sample.
+    The allele-specific copy number was calculated from those values for
+    each KRAS allele.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>parse_vcf</span>(<span class='no'>fname</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>fname</th>
-      <td><p>path to the file</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <pre class="usage"><span class='no'>allele_data_filt</span></pre>
+        
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>a tibble</p>
+    <p>a tibble (182 x 25)</p><dl class='dl-horizontal'>
+    <dt>common_id</dt><dd><p>ID shared by all data tables</p></dd>
+    <dt>Chr</dt><dd><p>chromosome</p></dd>
+    <dt>Start</dt><dd><p>start of variant</p></dd>
+    <dt>End</dt><dd><p>end of variant</p></dd>
+    <dt>aa_mod</dt><dd><p>more usable amino acid change</p></dd>
+    <dt>total_num_reads</dt><dd><p>total number of reads at this site</p></dd>
+    <dt>num_mut_reads</dt><dd><p>number of mutant reads</p></dd>
+    <dt>Ref</dt><dd><p>reference allele</p></dd>
+    <dt>Alt</dt><dd><p>alternate allele</p></dd>
+    <dt>Func.refGene</dt><dd><p>where the alteration is</p></dd>
+    <dt>Gene.refGene</dt><dd><p>gene name</p></dd>
+    <dt>ExonicFunc.refGene</dt><dd><p>type of mutation</p></dd>
+    <dt>file_name</dt><dd><p>name of the file</p></dd>
+    <dt>file_id</dt><dd><p>file ID</p></dd>
+    <dt>project_id</dt><dd><p>ID of the source project (TCGA-COAD or -READ)</p></dd>
+    <dt>case_id</dt><dd><p>case ID</p></dd>
+    <dt>sample_id</dt><dd><p>sample ID</p></dd>
+    <dt>sample_type</dt><dd><p>from where the sample was taken</p></dd>
+    <dt>CNV_start</dt><dd><p>start of the CNV call</p></dd>
+    <dt>CNV_end</dt><dd><p>end of the CNV call</p></dd>
+    <dt>copy_number</dt><dd><p>copy number at the locus</p></dd>
+    <dt>purity</dt><dd><p>purity of the tumor sample</p></dd>
+    <dt>cn_mut</dt><dd><p>copy number of the mutant allele</p></dd>
+    <dt>copy_number_adj</dt><dd><p>copy number of the locus, adjusted for purity</p></dd>
+    <dt>cn_wt</dt><dd><p>copy number of the WT allele</p></dd>
+</dl>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'># TODO
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#format">Format</a></li>
+          </ul>
 
   </div>
 </div>

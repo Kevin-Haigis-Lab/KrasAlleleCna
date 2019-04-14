@@ -5,4 +5,6 @@ articles:
   a01-download-getgdcdata: a01-download-getgdcdata.html
   b01-dataprep-processannovar: b01-dataprep-processannovar.html
   b02-dataprep-processmpileup: b02-dataprep-processmpileup.html
+  c01-calccopynum: c01-calccopynum.html
+  d01-plotresults: d01-plotresults.html
 

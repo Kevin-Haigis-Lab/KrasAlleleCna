@@ -61,6 +61,12 @@
     <li>
       <a href="../articles/b02-dataprep-processmpileup.html">B.02 - Parsing mpileup Results</a>
     </li>
+    <li>
+      <a href="../articles/c01-calccopynum.html">B.02 - Calculate Allele-specfic Copy Number</a>
+    </li>
+    <li>
+      <a href="../articles/d01-plotresults.html">D01 - Plot Allele-specific Copy Number Results</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -82,7 +88,7 @@
       <h1>B.01 - Parsing ANNOVAR Results</h1>
                         <h4 class="author">Joshua H Cook</h4>
             
-            <h4 class="date">2019-04-07</h4>
+            <h4 class="date">2019-04-14</h4>
       
       
       <div class="hidden name"><code>b01-dataprep-processannovar.Rmd</code></div>
@@ -100,7 +106,8 @@
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tibble)</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stringr)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(KrasAlleleCna)</a></code></pre></div>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(KrasAlleleCna)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co"># devtools::load_all()</span></a></code></pre></div>
 <p>Establish paths:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">pkg_dir &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="dt">package =</span> <span class="st">"KrasAlleleCna"</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">extdata_dir &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="dt">package =</span> <span class="st">"KrasAlleleCna"</span>)</a>
@@ -134,35 +141,30 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/any">any</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(annovar_tib<span class="op">$</span>aa_mod))</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
 </div>
-<div id="add-tissue-sample-information" class="section level2">
-<h2 class="hasAnchor">
-<a href="#add-tissue-sample-information" class="anchor"></a>Add tissue sample information</h2>
-<p>The ANNOVAR results were annotated with tumor sample data from the sample sheet.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">annovar_results_tib &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(annovar_tib, tidy_tcga_sample_sheet,</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">                                 <span class="dt">by =</span> <span class="st">"file_id"</span>)</a></code></pre></div>
-</div>
 <div id="save-tidy-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#save-tidy-data" class="anchor"></a>Save <em>tidy</em> data</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save</a></span>(annovar_tib, <span class="dt">file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(data_dir, <span class="st">"annovar_tib.RData"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">usethis<span class="op">::</span><span class="kw"><a href="https://usethis.r-lib.org/reference/use_data.html">use_data</a></span>(annovar_tib, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; ✔ Setting active project to '/n/data2/bidmc/medicine/haigis/Cook/testAnalysisToPkg/KrasAlleleCna'</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; ✔ Saving 'annovar_tib' to 'data/annovar_tib.rda'</span></a></code></pre></div>
 <div id="show-results" class="section level3">
 <h3 class="hasAnchor">
 <a href="#show-results" class="anchor"></a>Show results</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(annovar_tib)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; # A tibble: 6 x 12</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;   file_id Chr    Start    End Ref   Alt   Func.refGene Gene.refGene</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;       </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; 1 00b7ee… chr12 2.52e7 2.52e7 C     T     exonic       KRAS        </span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; 2 014560… chr12 2.52e7 2.52e7 C     T     exonic       KRAS        </span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; 3 0365cd… chr12 2.52e7 2.52e7 C     G     exonic       KRAS        </span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 4 048e9e… chr12 2.52e7 2.52e7 C     T     exonic       KRAS        </span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; 5 07fe15… chr12 2.52e7 2.52e7 C     T     exonic       KRAS        </span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; 6 08c1d8… chr12 2.52e7 2.52e7 C     A     exonic       KRAS        </span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; # … with 4 more variables: GeneDetail.refGene &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; #   ExonicFunc.refGene &lt;chr&gt;, AAChange.refGene &lt;chr&gt;, aa_mod &lt;chr&gt;</span></a></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(annovar_tib) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/kableExtra/topics/kable_styling">kable_styling</a></span>(<span class="dt">bootstrap_options =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/kableExtra/topics/scroll_box">scroll_box</a></span>(<span class="dt">width =</span> <span class="st">"500px"</span>, <span class="dt">height =</span> <span class="st">"200px"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(annovar_tib)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 6 x 12</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;   file_id Chr    Start    End Ref   Alt   Func.refGene Gene.refGene</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;       </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 1 00b7ee… chr12 2.52e7 2.52e7 C     T     exonic       KRAS        </span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 2 014560… chr12 2.52e7 2.52e7 C     T     exonic       KRAS        </span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; 3 0365cd… chr12 2.52e7 2.52e7 C     G     exonic       KRAS        </span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; 4 048e9e… chr12 2.52e7 2.52e7 C     T     exonic       KRAS        </span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; 5 07fe15… chr12 2.52e7 2.52e7 C     T     exonic       KRAS        </span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; 6 08c1d8… chr12 2.52e7 2.52e7 C     A     exonic       KRAS        </span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; # … with 4 more variables: GeneDetail.refGene &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; #   ExonicFunc.refGene &lt;chr&gt;, AAChange.refGene &lt;chr&gt;, aa_mod &lt;chr&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(annovar_tib) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/kableExtra/topics/kable_styling">kable_styling</a></span>(<span class="dt">bootstrap_options =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/kableExtra/topics/scroll_box">scroll_box</a></span>(<span class="dt">width =</span> <span class="st">"500px"</span>, <span class="dt">height =</span> <span class="st">"200px"</span>)</a></code></pre></div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:500px; ">
 <table class="table table table-striped table-hover">
 <thead><tr>
@@ -7406,7 +7408,6 @@ G12D
 <li>
 <a href="#set-up">Set up</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#tidy-data">Tidy data</a></li>
-      <li><a href="#add-tissue-sample-information">Add tissue sample information</a></li>
       <li><a href="#save-tidy-data">Save <em>tidy</em> data</a></li>
       </ul>
 </li>

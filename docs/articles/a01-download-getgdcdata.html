@@ -61,6 +61,12 @@
     <li>
       <a href="../articles/b02-dataprep-processmpileup.html">B.02 - Parsing mpileup Results</a>
     </li>
+    <li>
+      <a href="../articles/c01-calccopynum.html">B.02 - Calculate Allele-specfic Copy Number</a>
+    </li>
+    <li>
+      <a href="../articles/d01-plotresults.html">D01 - Plot Allele-specific Copy Number Results</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -82,7 +88,7 @@
       <h1>A.01 - Downloading Data</h1>
                         <h4 class="author">Joshua H. Cook</h4>
             
-            <h4 class="date">2019-04-07</h4>
+            <h4 class="date">2019-04-14</h4>
       
       
       <div class="hidden name"><code>a01-download-getgdcdata.Rmd</code></div>
@@ -205,8 +211,9 @@
 <p>I added this information to the <code>downloaded</code> column of the sample sheet tibble before saving the final data table to “data/”</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">tidy_tcga_sample_sheet &lt;-<span class="st"> </span>tcga_sample_sheet <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">downloaded =</span> <span class="op">!</span>(file_id <span class="op">%in%</span><span class="st"> </span>failed_downloads))</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save</a></span>(tidy_tcga_sample_sheet,</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">     <span class="dt">file=</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(data_dir, <span class="st">"tidy_tcga_sample_sheet.RData"</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb9-3" data-line-number="3">usethis<span class="op">::</span><span class="kw"><a href="https://usethis.r-lib.org/reference/use_data.html">use_data</a></span>(tidy_tcga_sample_sheet, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; ✔ Setting active project to '/n/data2/bidmc/medicine/haigis/Cook/testAnalysisToPkg/KrasAlleleCna'</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; ✔ Saving 'tidy_tcga_sample_sheet' to 'data/tidy_tcga_sample_sheet.rda'</span></a></code></pre></div>
 <p>Below is a table of the number of failed downloads per TCGA project.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">tidy_tcga_sample_sheet <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span>downloaded) <span class="op">%&gt;%</span></a>

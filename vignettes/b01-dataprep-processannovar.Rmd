@@ -63,7 +63,7 @@ any(is.na(annovar_tib$aa_mod))
 ```
 
 
-## Save *tidy* data
+## Save tidy data
 
 ```{r save_annovar}
 usethis::use_data(annovar_tib, overwrite = TRUE)

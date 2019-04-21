@@ -47,7 +47,6 @@ Tumor CNV data were downloaded from https://gdc.cancer.gov/about-data/publicatio
 All downloaded files were downloaded to "data-raw/".
 
 
-
 ## Prepare file name lists using manifest and sample sheet from GDC
 
 The Manifest and Sample Sheet were downloaded from GDC Data Portal after adding the files to the cart. They were saved to "data-raw/".

@@ -28,7 +28,7 @@ library(ggplot2)
 
 ## Purpose
 
-In [Poulin *et al.* (2019)](http://cancerdiscovery.aacrjournals.org/content/early/2019/04/05/2159-8290.CD-18-1220), the authors studied the specific oncogenic properties of *KRAS* A146T mutations, a hotspot-mutation only found in colorectal adenocarcinma (CRC). For this paper, I was asked to find out whether there was a difference in the copy number of the mutant allele between human CRC patients with G12D (the most common *KRAS* oncogenic mutation) and A146T mutations. Not only would a difference suggest that dosage is an important factor, but could also point to differences in interactions with the wild-type (WT) allele [[Zhou *et al.*, 2016](https://www.ncbi.nlm.nih.gov/pubmed/27422332), [Lin and Haigis, 2018](https://www.ncbi.nlm.nih.gov/pubmed/29425486)]. 
+In [Poulin *et al.* (2019)](http://cancerdiscovery.aacrjournals.org/content/early/2019/04/05/2159-8290.CD-18-1220), the authors studied the specific oncogenic properties of *KRAS* A146T mutations, a hotspot-mutation only found in colorectal adenocarcinoma (CRC). For this paper, I was asked to find out whether there was a difference in the copy number of the mutant allele between human CRC patients with G12D (the most common *KRAS* oncogenic mutation) and A146T mutations. Not only would a difference suggest that dosage is an important factor, but could also point to differences in interactions with the wild-type (WT) allele [[Zhou *et al.*, 2016](https://www.ncbi.nlm.nih.gov/pubmed/27422332), [Lin and Haigis, 2018](https://www.ncbi.nlm.nih.gov/pubmed/29425486)]. 
 
 This analysis was divided into 4 parts: A) downloading the data, B) processing the data, C) calculating the allele copy number, and D) analyzing the results.
 

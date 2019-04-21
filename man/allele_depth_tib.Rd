@@ -34,7 +34,7 @@
 allele_depth_tib
 }
 \description{
-A tibble of both mpileup and ANNOVAr data - thus it holds the number of
+A tibble of both mpileup and ANNOVAR data - thus it holds the number of
     reads at each mutations
 }
 \keyword{datasets}

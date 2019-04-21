@@ -17,7 +17,7 @@ status](https://codecov.io/gh/jhrcook/KrasAlleleCna/branch/master/graph/badge.sv
 In [Poulin *et al.*
 (2019)](http://cancerdiscovery.aacrjournals.org/content/early/2019/04/05/2159-8290.CD-18-1220),
 the authors studied the specific oncogenic properties of *KRAS* A146T
-mutations, a hotspot-mutation only found in colorectal adenocarcinma
+mutations, a hotspot-mutation only found in colorectal adenocarcinoma
 (CRC). For this paper, I was asked to find out whether there was a
 difference in the copy number of the mutant allele between human CRC
 patients with G12D (the most common *KRAS* oncogenic mutation) and A146T

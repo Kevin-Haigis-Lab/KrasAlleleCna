@@ -52,7 +52,7 @@
 
 #' mpileup and ANNOVAR data merged
 #'
-#' A tibble of both mpileup and ANNOVAr data - thus it holds the number of
+#' A tibble of both mpileup and ANNOVAR data - thus it holds the number of
 #'     reads at each mutations
 #'
 #' @format a tibble (190 x 23)

@@ -12,7 +12,7 @@ test_that("heatmap of genotype returns a ggplot object", {
         ungroup() %>%
         mutate(cn_mut = ifelse(cn_mut < 0, 0, cn_mut),
                cn_wt = ifelse(cn_wt < 0, 0, cn_wt),
-               codon = as.numeric(str_extract(aa_mod, "[:digit:]+")))
+               codon = as.numeric(stringr::str_extract(aa_mod, "[:digit:]+")))
 
     a146t_plot <- plot_genotype_heatmap(cn_tib, "A146T")
     g12d_plot <- plot_genotype_heatmap(cn_tib, "G12D")

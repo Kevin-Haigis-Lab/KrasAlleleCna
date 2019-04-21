@@ -50,13 +50,7 @@ There was no detectable difference between the copy number of the G12D
 or A146T *KRAS* alleles.
 
 The below plot showed the copy number of the mutant and WT allele in
-G12D and A146T
-    samples.
-
-    #> Warning: Removed 10 rows containing missing values (geom_segment).
-    #> Warning: Removed 10 rows containing missing values (geom_point).
-    
-    #> Warning: Removed 10 rows containing missing values (geom_point).
+G12D and A146T samples.
 
 <img src="man/figures/README-lateralplot-1.png" width="100%" />
 

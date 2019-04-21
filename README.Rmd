@@ -47,7 +47,7 @@ There was no detectable difference between the copy number of the G12D or A146T 
 
 The below plot showed the copy number of the mutant and WT allele in G12D and A146T samples.
 
-```{r lateralplot, echo=FALSE}
+```{r lateralplot, echo=FALSE, warning=FALSE}
 cn_tib <- allele_data_filt %>%
     filter(project_id %in% c("TCGA-COAD", "TCGA-READ")) %>%
     group_by(aa_mod) %>%
@@ -84,7 +84,7 @@ Though there seems to be increased amplification in human tumor samples, the num
 
 Heatmaps of the genotypes of the samples highlighted that the most common genotype was 1 mutant : 1 WT allele.
 
-```{r genotypeheatmap, echo=FALSE}
+```{r genotypeheatmap, echo=FALSE, warning=FALSE}
 plot_genotype_heatmap(cn_tib, "A146T")
 plot_genotype_heatmap(cn_tib, "G12D")
 ```

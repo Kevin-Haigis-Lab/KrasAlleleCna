@@ -29,8 +29,9 @@ Imports:
     kableExtra,
     usethis,
     gridExtra,
-    forcats,
-    jhcutils
+    forcats
+Remotes:
+    github::jhrcook/jhcutils
 Suggests: 
     testthat,
     rmarkdown,

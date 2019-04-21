@@ -271,8 +271,23 @@
 <h1 class="hasAnchor">
 <a href="#calculate-allele-specific-copy-number" class="anchor"></a>Calculate allele specific copy number</h1>
 <p>Finally, the allele specific copy number was calculated. The equation was taken from Eq. (2) in Stephens et al. 2012, Nature Letter:</p>
+<p><span class="math display">\[
+    n_{mut} = \frac{r}{R} \times \frac{1}{p} \times (p \times n_{locus} + 2(1 - p))
+\]</span></p>
 <pre><code>n_mut = (r/R) * (1/p) * (p * n_locus + 2 * (1 - p))</code></pre>
-<p>where n_mut = copy number of the mutant allele r = number of reads with a mutation R = number of reads total from the locus p = fraction of tumor cells (i.e. purity) n_locus = copy number of the locus</p>
+<p>where</p>
+<ul>
+<li>
+<span class="math inline">\(n_{mut}\)</span> = copy number of the mutant allele</li>
+<li>
+<span class="math inline">\(r\)</span> = number of reads with a mutation</li>
+<li>
+<span class="math inline">\(R\)</span> = number of reads total from the locus</li>
+<li>
+<span class="math inline">\(p\)</span> = fraction of tumor cells (i.e. purity)</li>
+<li>
+<span class="math inline">\(n_{locus}\)</span> = copy number of the locus</li>
+</ul>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">allele_data_filt <span class="op">%&lt;&gt;%</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">cn_mut =</span> (num_mut_reads <span class="op">/</span><span class="st"> </span>(total_num_reads <span class="op">*</span><span class="st"> </span>purity)) <span class="op">*</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">           </span>(purity <span class="op">*</span><span class="st"> </span>copy_number <span class="op">+</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>purity))),</a>

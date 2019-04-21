@@ -62,7 +62,7 @@
       <a href="../articles/b02-dataprep-processmpileup.html">B.02 - Parsing mpileup Results</a>
     </li>
     <li>
-      <a href="../articles/c01-calccopynum.html">B.02 - Calculate Allele-specfic Copy Number</a>
+      <a href="../articles/c01-calccopynum.html">C.01 - Calculate Allele-specfic Copy Number</a>
     </li>
     <li>
       <a href="../articles/d01-plotresults.html">D.01 - Plot Allele-specific Copy Number Results</a>
@@ -98,7 +98,7 @@
 <div id="set-up" class="section level1">
 <h1 class="hasAnchor">
 <a href="#set-up" class="anchor"></a>Set up</h1>
-<p>Load libraries</p>
+<p>Load libraries.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(readr)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tibble)</a>
@@ -111,7 +111,7 @@
 <div id="data-preparation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#data-preparation" class="anchor"></a>Data Preparation</h1>
-<p>Per the scope of this study, only the COAD and READ data were further analyzed. The number of samples with each allele were counted. Finally, the rare negative numbers were set to 0.</p>
+<p>Per the scope of this study, only the COAD and READ data were further analyzed. The number of samples with each allele were counted. Finally, the few negative numbers were set to 0.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">cn_tib &lt;-<span class="st"> </span>allele_data_filt <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(project_id <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"TCGA-COAD"</span>, <span class="st">"TCGA-READ"</span>)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(aa_mod) <span class="op">%&gt;%</span></a>
@@ -146,7 +146,7 @@
 <div id="lateral-plot-between-a146t-and-g12d-mutant-and-wt-alleles" class="section level2">
 <h2 class="hasAnchor">
 <a href="#lateral-plot-between-a146t-and-g12d-mutant-and-wt-alleles" class="anchor"></a>Lateral plot between A146T and G12D mutant and WT alleles</h2>
-<p>The following plot examines the copy number alterations of the mutant and WT alleles of tumor amples with either <em>KRAS</em> G12d and A146T mutations. Each point represents an allele, either mutant or WT for samples with either mutation of interest. The y-axis is the copy number of the allele. Two points connected by a line are from the same tumor sample. The coloration is correlated to the difference between the mutant and WT allele in the sample. Thus, the more red, the greater the mutant allele copy number is compared to the WT allele copy number.</p>
+<p>The following plot examines the copy number alterations of the mutant and WT alleles of tumor samples with either <em>KRAS</em> G12D and A146T mutations. Each point represents an allele, either mutant or WT for samples with either mutation of interest. The y-axis is the copy number of the allele. Two points connected by a line are from the same tumor sample. The coloration is correlated to the difference between the mutant and WT allele in the sample. Thus, the more red, the greater the mutant allele copy number is compared to the WT allele copy number.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># colors</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">red_col &lt;-<span class="st"> "red"</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">blue_col &lt;-<span class="st"> "blue"</span></a>
@@ -217,10 +217,10 @@
 <a class="sourceLine" id="cb5-36" data-line-number="36">                           <span class="dt">minor_breaks =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="fl">0.5</span>, <span class="fl">3.5</span>, <span class="fl">0.5</span>))</a>
 <a class="sourceLine" id="cb5-37" data-line-number="37">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(hm)</a>
 <a class="sourceLine" id="cb5-38" data-line-number="38">}</a></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">plot_genotype_heatmap</span>(cn_tib, <span class="st">"A146T"</span>)</a></code></pre></div>
-<p><img src="d01-plotresults_files/figure-html/genotypeheatmap-1.png" width="700"></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">plot_genotype_heatmap</span>(cn_tib, <span class="st">"G12D"</span>)</a></code></pre></div>
-<p><img src="d01-plotresults_files/figure-html/genotypeheatmap-2.png" width="700"></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/KrasAlleleCna/topics/plot_genotype_heatmap">plot_genotype_heatmap</a></span>(cn_tib, <span class="st">"A146T"</span>)</a></code></pre></div>
+<p><img src="d01-plotresults_files/figure-html/genotypeheatmap-1.png" width="96"></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/KrasAlleleCna/topics/plot_genotype_heatmap">plot_genotype_heatmap</a></span>(cn_tib, <span class="st">"G12D"</span>)</a></code></pre></div>
+<p><img src="d01-plotresults_files/figure-html/genotypeheatmap-2.png" width="96"></p>
 </div>
 </div>
   </div>

@@ -161,14 +161,17 @@ allele_data_filt %>%
 
 Finally, the allele specific copy number was calculated. The equation was taken from Eq. (2) in Stephens et al. 2012, Nature Letter: 
 
-    n_mut = (r/R) * (1/p) * (p * n_locus + 2 * (1 - p))
+$$
+    n_{mut} = \frac{r}{R} \times \frac{1}{p} \times (p \times n_{locus} + 2(1 - p))
+$$
 
 where
-    n_mut = copy number of the mutant allele
-    r = number of reads with a mutation
-    R = number of reads total from the locus
-    p = fraction of tumor cells (i.e. purity)
-    n_locus = copy number of the locus
+
+* $n_{mut}$ = copy number of the mutant allele
+* $r$ = number of reads with a mutation
+* $R$ = number of reads total from the locus
+* $p$ = fraction of tumor cells (i.e. purity)
+* $n_{locus}$ = copy number of the locus
 
 
 ```{r calc_copynum}

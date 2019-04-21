@@ -1,8 +1,5 @@
 context("test-parse_vcf")
 
-library(jhcutils)
-library(dplyr)
-
 test_that("VCF files are properly parsed", {
     vcf_example <- "005ea64b-18e7-4f50-b940-38322a96e034_mpileup.vcf"
     vcf <- parse_vcf(vcf_example)

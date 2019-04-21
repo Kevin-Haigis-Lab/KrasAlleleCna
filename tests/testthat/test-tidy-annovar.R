@@ -1,6 +1,5 @@
 context("test-tidy-annovar")
 
-library(jhcutils)
 library(purrr)
 library(tibble)
 library(readr)
@@ -28,11 +27,11 @@ test_that("ANNOVAR file is properly parsed", {
     tt <- parse_annovar_mutation(annovar_example)
 
     expect_true(tibble::is_tibble(tt))
-    expect_equal(u_pull(tt, Chr), "chr12")
-    expect_equal(u_pull(tt, Gene.refGene), "KRAS")
-    expect_equal(u_pull(tt, Func.refGene), c("UTR3", "intronic"))
-    expect_equal(u_pull(tt, AAChange.refGene), c("p.A146T", "p.G12D", "other_mut", NA))
-    expect_equal(u_pull(tt, aa_mod), c("A146T", "G12D", NA))
+    expect_equal(unique(tt$Chr), "chr12")
+    expect_equal(unique(tt$Gene.refGene), "KRAS")
+    expect_equal(unique(tt$Func.refGene), c("UTR3", "intronic"))
+    expect_equal(unique(tt$AAChange.refGene), c("p.A146T", "p.G12D", "other_mut", NA))
+    expect_equal(unique(tt$aa_mod), c("A146T", "G12D", NA))
 })
 
 

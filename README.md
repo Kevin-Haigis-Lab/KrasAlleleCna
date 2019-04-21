@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# KrasAlleleCna
+# *KRAS* allele-specific CNA <a href="https://jhrcook.github.io/KrasAlleleCna/index.html"> <img src="man/figures/logo.png" align="right" alt="" width="120" /> </a>
 
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -11,6 +11,19 @@ status](https://travis-ci.org/jhrcook/KrasAlleleCna.svg?branch=master)](https://
 status](https://ci.appveyor.com/api/projects/status/github/jhrcook/KrasAlleleCna?branch=master&svg=true)](https://ci.appveyor.com/project/jhrcook/KrasAlleleCna)
 [![Coverage
 status](https://codecov.io/gh/jhrcook/KrasAlleleCna/branch/master/graph/badge.svg)](https://codecov.io/github/jhrcook/KrasAlleleCna?branch=master)
+
+You can install this R package from GitHub and run the analyses yourself
+(the raw data files are not included, though have been loaded into RData
+objects, already).
+
+``` r
+devtools::install_github("jhrcook/KrasAlleleCna")
+library(KrasAlleleCna)
+```
+
+A website to peruse this work is available
+[here](https://jhrcook.github.io/KrasAlleleCna/). The Articles
+(i.e. vignettes) contain the analyses.
 
 ## Purpose
 

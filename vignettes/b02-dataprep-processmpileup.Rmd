@@ -66,7 +66,7 @@ The downstream steps only required the total number of reads and the number of m
 ```{r get_importantinfo}
 mpileup_data <- mpileup_data %>%
     mutate(total_num_reads = as.numeric(num_high_qual_bases),
-               num_mut_reads = str_split_fixed(alleleic_depths,
+               num_mut_reads = str_split_fixed(allelic_depths,
                                                ",", 2)[, 2]) %>%
     select(file_id, start, total_num_reads, num_mut_reads) %>%
     filter(!(str_detect(num_mut_reads, ",") | num_mut_reads == "")) %>%

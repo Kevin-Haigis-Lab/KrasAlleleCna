@@ -29,7 +29,8 @@ Imports:
     kableExtra,
     usethis,
     gridExtra,
-    forcats
+    forcats,
+    jhcutils
 Suggests: 
     testthat,
     rmarkdown,

@@ -7,6 +7,7 @@ reference:
       - tidy_tcga_sample_sheet
       - allele_depth_tib
       - allele_data_filt
+      - cnv_tib
   
   - title: "Reading data files"
     desc: >
@@ -21,3 +22,4 @@ reference:
   - title: "General utilities"
     contents:
       - n_unique
+      - plot_genotype_heatmap

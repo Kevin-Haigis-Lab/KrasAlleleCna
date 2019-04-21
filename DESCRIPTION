@@ -5,7 +5,8 @@ Authors@R:
     person(given = c("Joshua", "H"),
            family = "Cook",
            role = c("aut", "cre"),
-           email = "jhcook@g.harvard.edu")
+           email = "jhcook@g.harvard.edu",
+           comment = c(ORCID = "0000-0001-9815-6879"))
 Description: This package contains the complete analysis of the copy number
     alteration (CNA) of KRAS in colorectal cancer (CRC).
 License: GPL-3
@@ -30,8 +31,6 @@ Imports:
     usethis,
     gridExtra,
     forcats
-Remotes:
-    github::jhrcook/jhcutils
 Suggests: 
     testthat,
     rmarkdown,

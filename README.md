@@ -55,3 +55,11 @@ common genotype was 1 mutant : 1 WT
 allele.
 
 <img src="man/figures/README-genotypeheatmap-1.png" width="100%" /><img src="man/figures/README-genotypeheatmap-2.png" width="100%" />
+
+-----
+
+**Check out more work from the Haigis Lab at our
+[website](https://www.haigislab.org)\!**
+
+Any mistakes or questions? Open an
+[Issue](https://github.com/jhrcook/KrasAlleleCna/issues) on GitHub.

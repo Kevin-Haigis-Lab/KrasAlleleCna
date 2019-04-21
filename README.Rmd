@@ -79,3 +79,10 @@ Heatmaps of the genotypes of the samples highlighted that the most common genoty
 plot_genotype_heatmap(cn_tib, "A146T")
 plot_genotype_heatmap(cn_tib, "G12D")
 ```
+
+---
+
+**Check out more work from the Haigis Lab at our [website](https://www.haigislab.org)!**
+
+Any mistakes or questions? Open an [Issue](https://github.com/jhrcook/KrasAlleleCna/issues) on GitHub.
+

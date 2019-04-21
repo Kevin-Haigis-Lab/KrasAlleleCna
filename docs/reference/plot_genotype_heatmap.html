@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • KrasAlleleCna</title>
+<title>Plot genotype heatmaps — plot_genotype_heatmap • KrasAlleleCna</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,13 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Plot genotype heatmaps — plot_genotype_heatmap" />
+
+<meta property="og:description" content="Plot the genotypes of mutant samples by allele as a heatmap.
+    See vignette &quot;D.01 - Plot Allele-specific Copy Number Results&quot; for how
+    to use this function. It was made into a function primarily so it could
+    also be used in the README." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +53,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -116,108 +122,45 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Plot genotype heatmaps</h1>
+    
+    <div class="hidden name"><code>plot_genotype_heatmap.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Plot the genotypes of mutant samples by allele as a heatmap.
+    See vignette "D.01 - Plot Allele-specific Copy Number Results" for how
+    to use this function. It was made into a function primarily so it could
+    also be used in the README.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-data" class="hasAnchor"><a href="#section-data" class="anchor"></a>Data</h2>
-          <p class="section-desc"><p>Data files used in the analysis.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="annovar_tib.html">annovar_tib</a></code> </p>
-        </td>
-        <td><p>ANNOVAR results</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tidy_tcga_sample_sheet.html">tidy_tcga_sample_sheet</a></code> </p>
-        </td>
-        <td><p>TCGA Sample Sheet</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="allele_depth_tib.html">allele_depth_tib</a></code> </p>
-        </td>
-        <td><p>mpileup and ANNOVAR data merged</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="allele_data_filt.html">allele_data_filt</a></code> </p>
-        </td>
-        <td><p>All data files merged</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-reading-data-files" class="hasAnchor"><a href="#section-reading-data-files" class="anchor"></a>Reading data files</h2>
-          <p class="section-desc"><p>Functions for rading in files.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="parse_vcf.html">parse_vcf()</a></code> </p>
-        </td>
-        <td><p>Parse a VCF file</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parse_annovar_mutation.html">parse_annovar_mutation()</a></code> </p>
-        </td>
-        <td><p>Parse ANNOVAR mutation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="choose_one_filename.html">choose_one_filename()</a></code> </p>
-        </td>
-        <td><p>Select the best filename to keep</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="two_filename_handler.html">two_filename_handler()</a></code> <code><a href="two_filename_handler.html">three_filename_handler()</a></code> </p>
-        </td>
-        <td><p>Select the best of two or three filenames</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-general-utilities" class="hasAnchor"><a href="#section-general-utilities" class="anchor"></a>General utilities</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="n_unique.html">n_unique()</a></code> </p>
-        </td>
-        <td><p>Number of unique values</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>plot_genotype_heatmap</span>(<span class='no'>tib</span>, <span class='no'>allele</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>tib</th>
+      <td><p>copy number information</p></td>
+    </tr>
+    <tr>
+      <th>allele</th>
+      <td><p>allele to plot for</p></td>
+    </tr>
     </table>
-  </div>
+    
 
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-data">Data</a></li>
-      <li><a href="#section-reading-data-files">Reading data files</a></li>
-      <li><a href="#section-general-utilities">General utilities</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
+
   </div>
 </div>
 

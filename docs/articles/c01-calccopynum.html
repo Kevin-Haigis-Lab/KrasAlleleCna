@@ -274,7 +274,6 @@
 <p><span class="math display">\[
     n_{mut} = \frac{r}{R} \times \frac{1}{p} \times (p \times n_{locus} + 2(1 - p))
 \]</span></p>
-<pre><code>n_mut = (r/R) * (1/p) * (p * n_locus + 2 * (1 - p))</code></pre>
 <p>where</p>
 <ul>
 <li>
@@ -288,16 +287,16 @@
 <li>
 <span class="math inline">\(n_{locus}\)</span> = copy number of the locus</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">allele_data_filt <span class="op">%&lt;&gt;%</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">cn_mut =</span> (num_mut_reads <span class="op">/</span><span class="st"> </span>(total_num_reads <span class="op">*</span><span class="st"> </span>purity)) <span class="op">*</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">           </span>(purity <span class="op">*</span><span class="st"> </span>copy_number <span class="op">+</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>purity))),</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">           <span class="dt">copy_number_adj =</span> (<span class="dv">1</span> <span class="op">/</span><span class="st"> </span>purity) <span class="op">*</span><span class="st"> </span>(copy_number <span class="op">-</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>purity))),</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">           <span class="dt">cn_wt =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(aa_mod <span class="op">==</span><span class="st"> "WT"</span>,</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">                          copy_number_adj,</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">                          copy_number_adj <span class="op">-</span><span class="st"> </span>cn_mut))</a></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">usethis<span class="op">::</span><span class="kw"><a href="https://usethis.r-lib.org/reference/use_data.html">use_data</a></span>(allele_data_filt, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; ✔ Setting active project to '/n/data2/bidmc/medicine/haigis/Cook/testAnalysisToPkg/KrasAlleleCna'</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; ✔ Saving 'allele_data_filt' to 'data/allele_data_filt.rda'</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">allele_data_filt <span class="op">%&lt;&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">cn_mut =</span> (num_mut_reads <span class="op">/</span><span class="st"> </span>(total_num_reads <span class="op">*</span><span class="st"> </span>purity)) <span class="op">*</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">           </span>(purity <span class="op">*</span><span class="st"> </span>copy_number <span class="op">+</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>purity))),</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">           <span class="dt">copy_number_adj =</span> (<span class="dv">1</span> <span class="op">/</span><span class="st"> </span>purity) <span class="op">*</span><span class="st"> </span>(copy_number <span class="op">-</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>purity))),</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">           <span class="dt">cn_wt =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(aa_mod <span class="op">==</span><span class="st"> "WT"</span>,</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">                          copy_number_adj,</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">                          copy_number_adj <span class="op">-</span><span class="st"> </span>cn_mut))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">usethis<span class="op">::</span><span class="kw"><a href="https://usethis.r-lib.org/reference/use_data.html">use_data</a></span>(allele_data_filt, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; ✔ Setting active project to '/n/data2/bidmc/medicine/haigis/Cook/testAnalysisToPkg/KrasAlleleCna'</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; ✔ Saving 'allele_data_filt' to 'data/allele_data_filt.rda'</span></a></code></pre></div>
 </div>
   </div>
 

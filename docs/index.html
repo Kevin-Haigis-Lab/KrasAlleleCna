@@ -105,42 +105,14 @@
 <a href="#conclusions" class="anchor"></a>Conclusions</h2>
 <p>There was no detectable difference between the copy number of the G12D or A146T <em>KRAS</em> alleles.</p>
 <p>The below plot showed the copy number of the mutant and WT allele in G12D and A146T samples.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">cn_tib &lt;-<span class="st"> </span>allele_data_filt <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(project_id <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"TCGA-COAD"</span>, <span class="st">"TCGA-READ"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="st">    </span><span class="kw">group_by</span>(aa_mod) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">allele_count =</span> <span class="kw">n_distinct</span>(common_id)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="st">    </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">cn_mut =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(cn_mut <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">0</span>, cn_mut),</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">           <span class="dt">cn_wt =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(cn_wt <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">0</span>, cn_wt),</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">           <span class="dt">codon =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw">str_extract</span>(aa_mod, <span class="st">"[:digit:]+"</span>)))</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">cn_tib <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">aa_mod =</span> forcats<span class="op">::</span><span class="kw"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html">fct_reorder</a></span>(aa_mod, codon)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(aa_mod <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"A146T"</span>, <span class="st">"G12D"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">diff =</span> cn_mut <span class="op">-</span><span class="st"> </span>cn_wt) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="st">    </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="st">    </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>aa_mod) <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="st">    </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="st">"mutant"</span>, <span class="dt">xend =</span> <span class="st">"wild type"</span>,</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">                     <span class="dt">y =</span> cn_mut, <span class="dt">yend =</span> cn_wt,</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">                     <span class="dt">color =</span> diff)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="st">"mutant"</span>, <span class="dt">y =</span> cn_mut, <span class="dt">color =</span> diff), <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="st">"wild type"</span>, <span class="dt">y =</span> cn_wt, <span class="dt">color =</span> diff), <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="st">    </span><span class="kw">scale_color_gradient</span>(<span class="dt">low =</span> <span class="st">"blue"</span>, <span class="dt">high =</span> <span class="st">"red"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">panel.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">"white"</span>),</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22">          <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">color =</span> <span class="st">"grey85"</span>),</a>
-<a class="sourceLine" id="cb1-23" data-line-number="23">          <span class="dt">legend.key.height =</span> <span class="kw">unit</span>(<span class="fl">0.2</span>, <span class="st">"in"</span>),</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24">          <span class="dt">legend.key.width =</span> <span class="kw">unit</span>(<span class="fl">0.1</span>, <span class="st">"in"</span>),</a>
-<a class="sourceLine" id="cb1-25" data-line-number="25">          <span class="dt">axis.ticks =</span> <span class="kw">element_line</span>(<span class="st">"grey85"</span>),</a>
-<a class="sourceLine" id="cb1-26" data-line-number="26">          <span class="dt">strip.background =</span> <span class="kw">element_blank</span>()) <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">"allele"</span>, <span class="dt">y =</span> <span class="st">"copy number"</span>,</a>
-<a class="sourceLine" id="cb1-28" data-line-number="28">         <span class="dt">title =</span> <span class="st">"Copy number of both alleles in KRAS mutants"</span>,</a>
-<a class="sourceLine" id="cb1-29" data-line-number="29">         <span class="dt">color =</span> <span class="st">"CN difference"</span>)</a></code></pre></div>
+<pre><code>#&gt; Warning: Removed 10 rows containing missing values (geom_segment).
+#&gt; Warning: Removed 10 rows containing missing values (geom_point).
+
+#&gt; Warning: Removed 10 rows containing missing values (geom_point).</code></pre>
 <p><img src="reference/figures/README-lateralplot-1.png" width="100%"></p>
 <p>Though there seems to be increased amplification in human tumor samples, the number of available samples limited the power of the study.</p>
 <p>Heatmaps of the genotypes of the samples highlighted that the most common genotype was 1 mutant : 1 WT allele.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">plot_genotype_heatmap</span>(cn_tib, <span class="st">"A146T"</span>)</a></code></pre></div>
-<p><img src="reference/figures/README-genotypeheatmap-1.png" width="100%"></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">plot_genotype_heatmap</span>(cn_tib, <span class="st">"G12D"</span>)</a></code></pre></div>
-<p><img src="reference/figures/README-genotypeheatmap-2.png" width="100%"></p>
+<p><img src="reference/figures/README-genotypeheatmap-1.png" width="100%"><img src="reference/figures/README-genotypeheatmap-2.png" width="100%"></p>
 </div>
 </div>
   </div>

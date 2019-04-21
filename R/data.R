@@ -121,3 +121,21 @@
 #'     \item{cn_wt}{copy number of the WT allele}
 #' }
 "allele_data_filt"
+
+
+#' CNA information from TCGA
+#'
+#' @description This tibble contains the CNV information on all samples in
+#'     TCGA. It was downloaded from
+#'     \url{https://gdc.cancer.gov/about-data/publications/pancanatlas}.
+#'
+#' @format a tibble (2539963 x 6)
+#' \describe{
+#'     \item{Sample}{sample ID}
+#'     \item{Chromosome}{chromosome of the CNA}
+#'     \item{Start}{start of the CNA}
+#'     \item{End}{end of the CNA}
+#'     \item{Num_Probes}{number of probes over the region}
+#'     \item{Segment_Mean}{the CNA value equivalent to log2(copy-number/ 2)}
+#' }
+"cnv_tib"

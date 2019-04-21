@@ -27,13 +27,19 @@ parse_vcf <- function(fname) {
     v %<>%
         dplyr::select(start, ref, alt, qual, read_info) %>%
         dplyr::mutate(num_high_qual_bases = str_split_fixed(read_info, ":", 3)[, 2],
-                      alleleic_depths = str_split_fixed(read_info, ":", 3)[, 3],
-                      alleleic_depths = str_remove_all(alleleic_depths, ",0$"))
+                      allelic_depths = str_split_fixed(read_info, ":", 3)[, 3],
+                      allelic_depths = str_remove_all(allelic_depths, ",0$"))
     return(v)
 }
 
 
 
-utils::globalVariables(c("start", "ref", "alt", "qual", "read_info",
-                         "alleleic_depths"),
-                       add = TRUE)
+utils::globalVariables(
+    c("start",
+      "ref",
+      "alt",
+      "qual",
+      "read_info",
+      "allelic_depths"),
+    add = TRUE
+)

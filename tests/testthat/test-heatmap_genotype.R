@@ -3,7 +3,6 @@ context("test-heatmap_genotype")
 test_that("heatmap of genotype returns a ggplot object", {
     library(dplyr)
     library(ggplot2)
-    library(KrasAlleleCna)
 
     cn_tib <- allele_data_filt %>%
         filter(project_id %in% c("TCGA-COAD", "TCGA-READ")) %>%

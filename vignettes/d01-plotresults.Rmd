@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 # Set up
 
-Load libraries
+Load libraries.
 
 ```{r load_libs, warning=FALSE, message=FALSE}
 library(dplyr)
@@ -32,7 +32,7 @@ library(KrasAlleleCna)
 
 # Data Preparation
 
-Per the scope of this study, only the COAD and READ data were further analyzed. The number of samples with each allele were counted. Finally, the rare negative numbers were set to 0.
+Per the scope of this study, only the COAD and READ data were further analyzed. The number of samples with each allele were counted. Finally, the few negative numbers were set to 0.
 
 ```{r adjust_data}
 cn_tib <- allele_data_filt %>%
@@ -71,7 +71,7 @@ cn_tib %>%
 
 ## Lateral plot between A146T and G12D mutant and WT alleles
 
-The following plot examines the copy number alterations of the mutant and WT alleles of tumor amples with either *KRAS* G12d and A146T mutations. Each point represents an allele, either mutant or WT for samples with either mutation of interest. The y-axis is the copy number of the allele. Two points connected by a line are from the same tumor sample. The coloration is correlated to the difference between the mutant and WT allele in the sample. Thus, the more red, the greater the mutant allele copy number is compared to the WT allele copy number.
+The following plot examines the copy number alterations of the mutant and WT alleles of tumor samples with either *KRAS* G12D and A146T mutations. Each point represents an allele, either mutant or WT for samples with either mutation of interest. The y-axis is the copy number of the allele. Two points connected by a line are from the same tumor sample. The coloration is correlated to the difference between the mutant and WT allele in the sample. Thus, the more red, the greater the mutant allele copy number is compared to the WT allele copy number.
 
 ```{r lateralplot, warning=FALSE}
 # colors
@@ -149,7 +149,7 @@ plot_genotype_heatmap <- function(tib, allele) {
 }
 ```
 
-```{r genotypeheatmap}
+```{r genotypeheatmap, fig.width = 1, fig.height=1}
 plot_genotype_heatmap(cn_tib, "A146T")
 plot_genotype_heatmap(cn_tib, "G12D")
 ```

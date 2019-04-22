@@ -22,8 +22,8 @@ library(KrasAlleleCna)
 ```
 
 A website to peruse this work is available
-[here](https://jhrcook.github.io/KrasAlleleCna/). The Articles
-(i.e. vignettes) contain the analyses.
+[here](https://jhrcook.github.io/KrasAlleleCna/). The Vignettes contain
+the analyses.
 
 ## Purpose
 
@@ -31,14 +31,14 @@ In [Poulin *et al.*
 (2019)](http://cancerdiscovery.aacrjournals.org/content/early/2019/04/05/2159-8290.CD-18-1220),
 the authors studied the specific oncogenic properties of *KRAS* A146T
 mutations, a hotspot-mutation only found in colorectal adenocarcinoma
-(CRC). For this paper, I was asked to find out whether there was a
-difference in the copy number of the mutant allele between human CRC
+(COAD). For this paper, I was asked to find out whether there was a
+difference in the copy number of the mutant allele between human COAD
 patients with G12D (the most common *KRAS* oncogenic mutation) and A146T
 mutations. Not only would a difference suggest that dosage is an
 important factor, but could also point to differences in interactions
-with the wild-type (WT) allele \[[Zhou *et al.*,
+with the wild-type (WT) allele ([Zhou *et al.*,
 2016](https://www.ncbi.nlm.nih.gov/pubmed/27422332), [Lin and
-Haigis, 2018](https://www.ncbi.nlm.nih.gov/pubmed/29425486)\].
+Haigis, 2018](https://www.ncbi.nlm.nih.gov/pubmed/29425486)).
 
 This analysis was divided into 4 parts: A) downloading the data, B)
 processing the data, C) calculating the allele copy number, and D)
@@ -61,7 +61,7 @@ Heatmaps of the genotypes of the samples highlighted that the most
 common genotype was 1 mutant : 1 WT
 allele.
 
-<img src="man/figures/README-genotypeheatmap-1.png" width="100%" /><img src="man/figures/README-genotypeheatmap-2.png" width="100%" />
+<img src="man/figures/README-genotypeheatmap-1.png" width="50%" /><img src="man/figures/README-genotypeheatmap-2.png" width="50%" />
 
 -----
 

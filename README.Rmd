@@ -33,11 +33,11 @@ devtools::install_github("jhrcook/KrasAlleleCna")
 library(KrasAlleleCna)
 ```
 
-A website to peruse this work is available [here](https://jhrcook.github.io/KrasAlleleCna/). The Articles (i.e. vignettes) contain the analyses.
+A website to peruse this work is available [here](https://jhrcook.github.io/KrasAlleleCna/). The Vignettes contain the analyses.
 
 ## Purpose
 
-In [Poulin *et al.* (2019)](http://cancerdiscovery.aacrjournals.org/content/early/2019/04/05/2159-8290.CD-18-1220), the authors studied the specific oncogenic properties of *KRAS* A146T mutations, a hotspot-mutation only found in colorectal adenocarcinoma (CRC). For this paper, I was asked to find out whether there was a difference in the copy number of the mutant allele between human CRC patients with G12D (the most common *KRAS* oncogenic mutation) and A146T mutations. Not only would a difference suggest that dosage is an important factor, but could also point to differences in interactions with the wild-type (WT) allele [[Zhou *et al.*, 2016](https://www.ncbi.nlm.nih.gov/pubmed/27422332), [Lin and Haigis, 2018](https://www.ncbi.nlm.nih.gov/pubmed/29425486)]. 
+In [Poulin *et al.* (2019)](http://cancerdiscovery.aacrjournals.org/content/early/2019/04/05/2159-8290.CD-18-1220), the authors studied the specific oncogenic properties of *KRAS* A146T mutations, a hotspot-mutation only found in colorectal adenocarcinoma (COAD). For this paper, I was asked to find out whether there was a difference in the copy number of the mutant allele between human COAD patients with G12D (the most common *KRAS* oncogenic mutation) and A146T mutations. Not only would a difference suggest that dosage is an important factor, but could also point to differences in interactions with the wild-type (WT) allele ([Zhou *et al.*, 2016](https://www.ncbi.nlm.nih.gov/pubmed/27422332), [Lin and Haigis, 2018](https://www.ncbi.nlm.nih.gov/pubmed/29425486)). 
 
 This analysis was divided into 4 parts: A) downloading the data, B) processing the data, C) calculating the allele copy number, and D) analyzing the results.
 
@@ -47,7 +47,7 @@ There was no detectable difference between the copy number of the G12D or A146T 
 
 The below plot showed the copy number of the mutant and WT allele in G12D and A146T samples.
 
-```{r lateralplot, echo=FALSE, warning=FALSE}
+```{r lateralplot, echo=FALSE, warning=FALSE, cache=TRUE}
 cn_tib <- allele_data_filt %>%
     filter(project_id %in% c("TCGA-COAD", "TCGA-READ")) %>%
     group_by(aa_mod) %>%
@@ -84,7 +84,7 @@ Though there seems to be increased amplification in human tumor samples, the num
 
 Heatmaps of the genotypes of the samples highlighted that the most common genotype was 1 mutant : 1 WT allele.
 
-```{r genotypeheatmap, echo=FALSE, warning=FALSE}
+```{r genotypeheatmap, echo=FALSE, warning=FALSE, out.width=c('50%', '50%'), fig.show='hold', cache=TRUE}
 plot_genotype_heatmap(cn_tib, "A146T")
 plot_genotype_heatmap(cn_tib, "G12D")
 ```

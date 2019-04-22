@@ -1,3 +1,37 @@
+template:
+  params:
+    bootswatch: yeti
+
+
+navbar:
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: Vignettes
+      menu:
+      - text: A.01 - Downloading Data
+        href: articles/a01-download-getgdcdata.html
+      - text: B.01 - Parsing ANNOVAR Results
+        href: articles/b01-dataprep-processannovar.html
+      - text: B.02 - Parsing mpileup Results
+        href: articles/b02-dataprep-processmpileup.html
+      - text: C.01 - Calculate Allele-specific Copy Number
+        href: articles/c01-calccopynum.html
+      - text: D.01 - Plot Allele-specific Copy Number Results
+        href: articles/d01-plotresults.html
+    - text: Reference
+      href: reference/index.html
+    - text: Changelog
+      href: news/index.html
+  right:
+    - icon: fab fa-github fa-lg
+      text: "GitHub"
+      href: https://github.com/jhrcook/KrasAlleleCna
+    - icon: fas fa-dna fa-lg
+      text: "Haigis Lab"
+      href: https://www.haigislab.org
+
+
 reference:
   - title: "Data"
     desc: >

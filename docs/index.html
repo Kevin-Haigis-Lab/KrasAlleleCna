@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="The Allele-Specific CNA Analysis of KRAS in CRC">
@@ -50,12 +50,9 @@
      
   </a>
 </li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Vignettes
      
     <span class="caret"></span>
   </a>
@@ -78,10 +75,28 @@
   </ul>
 </li>
 <li>
+  <a href="reference/index.html">Reference</a>
+</li>
+<li>
   <a href="news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/jhrcook/KrasAlleleCna">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+    GitHub
+  </a>
+</li>
+<li>
+  <a href="https://www.haigislab.org">
+    <span class="fas fa fas fa-dna fa-lg"></span>
+     
+    Haigis Lab
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -105,11 +120,11 @@
 <p>You can install this R package from GitHub and run the analyses yourself (the raw data files are not included, though have been loaded into RData objects, already).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"jhrcook/KrasAlleleCna"</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(KrasAlleleCna)</a></code></pre></div>
-<p>A website to peruse this work is available <a href="https://jhrcook.github.io/KrasAlleleCna/">here</a>. The Articles (i.e. vignettes) contain the analyses.</p>
+<p>A website to peruse this work is available <a href="https://jhrcook.github.io/KrasAlleleCna/">here</a>. The Vignettes contain the analyses.</p>
 <div id="purpose" class="section level2">
 <h2 class="hasAnchor">
 <a href="#purpose" class="anchor"></a>Purpose</h2>
-<p>In <a href="http://cancerdiscovery.aacrjournals.org/content/early/2019/04/05/2159-8290.CD-18-1220">Poulin <em>et al.</em> (2019)</a>, the authors studied the specific oncogenic properties of <em>KRAS</em> A146T mutations, a hotspot-mutation only found in colorectal adenocarcinoma (CRC). For this paper, I was asked to find out whether there was a difference in the copy number of the mutant allele between human CRC patients with G12D (the most common <em>KRAS</em> oncogenic mutation) and A146T mutations. Not only would a difference suggest that dosage is an important factor, but could also point to differences in interactions with the wild-type (WT) allele [<a href="https://www.ncbi.nlm.nih.gov/pubmed/27422332">Zhou <em>et al.</em>, 2016</a>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/29425486">Lin and Haigis, 2018</a>].</p>
+<p>In <a href="http://cancerdiscovery.aacrjournals.org/content/early/2019/04/05/2159-8290.CD-18-1220">Poulin <em>et al.</em> (2019)</a>, the authors studied the specific oncogenic properties of <em>KRAS</em> A146T mutations, a hotspot-mutation only found in colorectal adenocarcinoma (COAD). For this paper, I was asked to find out whether there was a difference in the copy number of the mutant allele between human COAD patients with G12D (the most common <em>KRAS</em> oncogenic mutation) and A146T mutations. Not only would a difference suggest that dosage is an important factor, but could also point to differences in interactions with the wild-type (WT) allele (<a href="https://www.ncbi.nlm.nih.gov/pubmed/27422332">Zhou <em>et al.</em>, 2016</a>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/29425486">Lin and Haigis, 2018</a>).</p>
 <p>This analysis was divided into 4 parts: A) downloading the data, B) processing the data, C) calculating the allele copy number, and D) analyzing the results.</p>
 </div>
 <div id="conclusions" class="section level2">
@@ -120,7 +135,7 @@
 <p><img src="reference/figures/README-lateralplot-1.png" width="100%"></p>
 <p>Though there seems to be increased amplification in human tumor samples, the number of available samples limited the power of the study.</p>
 <p>Heatmaps of the genotypes of the samples highlighted that the most common genotype was 1 mutant : 1 WT allele.</p>
-<p><img src="reference/figures/README-genotypeheatmap-1.png" width="100%"><img src="reference/figures/README-genotypeheatmap-2.png" width="100%"></p>
+<p><img src="reference/figures/README-genotypeheatmap-1.png" width="50%"><img src="reference/figures/README-genotypeheatmap-2.png" width="50%"></p>
 <hr>
 <p><strong>Check out more work from the Haigis Lab at our <a href="https://www.haigislab.org">website</a>!</strong></p>
 <p>Any mistakes or questions? Open an <a href="https://github.com/jhrcook/KrasAlleleCna/issues">Issue</a> on GitHub.</p>

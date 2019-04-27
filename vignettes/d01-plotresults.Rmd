@@ -108,7 +108,7 @@ The plot below shows the genotypes of the tumor samples with either *KRAS* A146T
 The follow chunk is a function to which `"A146T"` and `"G12D"` are passed as `allele`.
 
 
-```{r genotypeheatmap, fig.width = 1, fig.height=1}
+```{r genotypeheatmap, out.width=c('50%', '50%'), fig.show='hold', cache=TRUE}
 plot_genotype_heatmap(cn_tib, "A146T")
 plot_genotype_heatmap(cn_tib, "G12D")
 ```

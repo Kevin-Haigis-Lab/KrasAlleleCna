@@ -18,3 +18,16 @@ Returns the tibble, checking if it is empty.
 Reads and parses an ANNOVAR file to return the amino acid change in a more
     understandable way in the column named \code{aa_mod}.
 }
+\examples{
+extdata_dir <- system.file("extdata", package = "KrasAlleleCna")
+annovar_file <- readRDS(file.path(extdata_dir, "annovar_output_list.rds"))[[3]]
+annovar_file
+
+parsed_annovar <- parse_annovar_mutation(annovar_file)
+parsed_annovar
+
+# the new column has easy to use amino acid mutations
+parsed_annovar$aa_mod
+
+
+}

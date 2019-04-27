@@ -2,9 +2,15 @@
 % Please edit documentation in R/download-data.R
 \name{choose_one_filename}
 \alias{choose_one_filename}
+\alias{two_filename_handler}
+\alias{three_filename_handler}
 \title{Select the best filename to keep}
 \usage{
 choose_one_filename(fn)
+
+two_filename_handler(fn)
+
+three_filename_handler(fn)
 }
 \arguments{
 \item{fn}{vector of filenames}
@@ -13,8 +19,11 @@ choose_one_filename(fn)
 a single filename from the input vector that should be retained
 }
 \description{
-Some cases the sample sheet have multiple files. This function 
-    uses a set of (fairly arbitrary) checks to select one filename
+Some cases in the sample sheet have multiple files.
+    `choose_one_filename()`uses a set of (fairly arbitrary) checks to select
+    one filename. `two_filename_handler()` and `three_filename_handler()`
+    parse two or three file names based on my heuristics for which is most
+    likely to be more useful.
 }
 \examples{
 test_fns <- c("TCGA-A6-2672-01B-03D-2301-10_Illumina_gdc_realn.bam",

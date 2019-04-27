@@ -18,7 +18,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,7 +39,8 @@
 
 <meta property="og:title" content="Parse a VCF file — parse_vcf" />
 
-<meta property="og:description" content="Parse the read-depth information of a VCF file." />
+<meta property="og:description" content="Parse the read-depth information of a VCF file produced by
+    mpileup" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -72,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">KrasAlleleCna</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -126,7 +127,7 @@
 </li>
 <li>
   <a href="https://www.haigislab.org">
-    <span class="fas fa fas fa-dna fa-lg"></span>
+    <span class="fas fa fas fa-flask fa-lg"></span>
      
     Haigis Lab
   </a>
@@ -150,7 +151,8 @@
 
     <div class="ref-description">
     
-    <p>Parse the read-depth information of a VCF file.</p>
+    <p>Parse the read-depth information of a VCF file produced by
+    mpileup</p>
     
     </div>
 
@@ -171,8 +173,73 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'># TODO
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># head of the VCF file</span>
+<span class='co'>#&gt; ##fileformat=VCFv4.2</span>
+<span class='co'>#&gt; ##FILTER=&lt;ID=PASS,Description="All filters passed"&gt;</span>
+<span class='co'>#&gt; ##bcftoolsVersion=1.9+htslib-1.9</span>
+<span class='co'>#&gt; ##bcftoolsCommand=mpileup -Ov --annotate INFO/AD,FORMAT/AD,FORMAT/DP ...</span>
+<span class='co'>#&gt; ##reference=file:///n/no_backup2/dbmi/park/jc604/databases/reference_...</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr1,length=248956422&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr2,length=242193529&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr3,length=198295559&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr4,length=190214555&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr5,length=181538259&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr6,length=170805979&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr7,length=159345973&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr8,length=145138636&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr9,length=138394717&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr10,length=133797422&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr11,length=135086622&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr12,length=133275309&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr13,length=114364328&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr14,length=107043718&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr15,length=101991189&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr16,length=90338345&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr17,length=83257441&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr18,length=80373285&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr19,length=58617616&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr20,length=64444167&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr21,length=46709983&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr22,length=50818468&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chrX,length=156040895&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chrY,length=57227415&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chrM,length=16569&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr1_KI270706v1_random,length=175055&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr1_KI270707v1_random,length=32032&gt;</span>
+<span class='co'>#&gt; ##contig=&lt;ID=chr1_KI270708v1_random,length=127682&gt;</span>
+<span class='co'>#&gt; ...</span>
+<span class='co'>#&gt; ##INFO=&lt;ID=QS,Number=R,Type=Float,Description="Auxiliary tag used for calling"&gt;</span>
+<span class='co'>#&gt; ##FORMAT=&lt;ID=PL,Number=G,Type=Integer,Description="List of Phred-scaled genotype likelihoods"&gt;</span>
+<span class='co'>#&gt; ##FORMAT=&lt;ID=DP,Number=1,Type=Integer,Description="Number of high-quality bases"&gt;</span>
+<span class='co'>#&gt; ##FORMAT=&lt;ID=AD,Number=R,Type=Integer,Description="Allelic depths"&gt;</span>
+<span class='co'>#&gt; ##INFO=&lt;ID=AD,Number=R,Type=Integer,Description="Total allelic depths"&gt;</span>
+<span class='co'>#&gt; #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  TCGA-FZ-5924-01A-13D-1609-08</span>
+<span class='co'>#&gt; chr12   25202434        .       A       &lt;*&gt;     0       .       DP=1;AD=1,0;I16=1,0,0,0,29,841,0,0,60,3600,0,0,0,0,0,0;QS=1,0;MQ0F=0    PL:DP:AD        0,3,29:1:1,0</span>
+<span class='co'>#&gt; chr12   25202435        .       G       &lt;*&gt;     0       .       DP=1;AD=1,0;I16=1,0,0,0,31,961,0,0,60,3600,0,0,1,1,0,0;QS=1,0;MQ0F=0    PL:DP:AD        0,3,31:1:1,0</span>
+<span class='co'>#&gt; chr12   25202436        .       C       &lt;*&gt;     0       .       DP=1;AD=1,0;I16=1,0,0,0,28,784,0,0,60,3600,0,0,2,4,0,0;QS=1,0;MQ0F=0    PL:DP:AD        0,3,28:1:1,0</span>
+<span class='co'>#&gt; chr12   25202437        .       A       &lt;*&gt;     0       .       DP=1;AD=1,0;I16=1,0,0,0,30,900,0,0,60,3600,0,0,3,9,0,0;QS=1,0;MQ0F=0    PL:DP:AD        0,3,30:1:1,0</span>
+<span class='co'>#&gt; chr12   25202438        .       G       &lt;*&gt;     0       .       DP=1;AD=1,0;I16=1,0,0,0,34,1156,0,0,60,3600,0,0,4,16,0,0;QS=1,0;MQ0F=0  PL:DP:AD        0,3,34:1:1,0</span>
+<span class='co'>#&gt; chr12   25202439        .       G       &lt;*&gt;     0       .       DP=1;AD=1,0;I16=1,0,0,0,33,1089,0,0,60,3600,0,0,5,25,0,0;QS=1,0;MQ0F=0  PL:DP:AD        0,3,33:1:1,0</span>
+<span class='co'>#&gt; ...</span>
 
+<span class='fu'>parse_vcf</span>(<span class='st'>"example.vcf"</span>)
+<span class='co'>#&gt; # A tibble: 8,917 x 7</span>
+<span class='co'>#&gt;       start ref   alt    qual read_info    num_high_qual_bas… allelic_depths</span>
+<span class='co'>#&gt;       &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;</span>
+<span class='co'>#&gt;  1 25202434 A     &lt;*&gt;       0 0,3,29:1:1,0 1                  1</span>
+<span class='co'>#&gt;  2 25202435 G     &lt;*&gt;       0 0,3,31:1:1,0 1                  1</span>
+<span class='co'>#&gt;  3 25202436 C     &lt;*&gt;       0 0,3,28:1:1,0 1                  1</span>
+<span class='co'>#&gt;  4 25202437 A     &lt;*&gt;       0 0,3,30:1:1,0 1                  1</span>
+<span class='co'>#&gt;  5 25202438 G     &lt;*&gt;       0 0,3,34:1:1,0 1                  1</span>
+<span class='co'>#&gt;  6 25202439 G     &lt;*&gt;       0 0,3,33:1:1,0 1                  1</span>
+<span class='co'>#&gt;  7 25202440 G     &lt;*&gt;       0 0,3,34:1:1,0 1                  1</span>
+<span class='co'>#&gt;  8 25202441 G     &lt;*&gt;       0 0,3,33:1:1,0 1                  1</span>
+<span class='co'>#&gt;  9 25202442 A     &lt;*&gt;       0 0,3,32:1:1,0 1                  1</span>
+<span class='co'>#&gt; 10 25202443 T     &lt;*&gt;       0 0,3,31:1:1,0 1                  1</span>
+<span class='co'>#&gt; # … with 8,907 more rows</span>
+
+<span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -9,6 +9,18 @@
 #'     If the file was empty, an empty tibble is returned. A column is added
 #'     that has a simple version of the amino acid change \code{aa_mod}.
 #'
+#' @examples
+#' extdata_dir <- system.file("extdata", package = "KrasAlleleCna")
+#' annovar_file <- readRDS(file.path(extdata_dir, "annovar_output_list.rds"))[[3]]
+#' annovar_file
+#'
+#' parsed_annovar <- parse_annovar_mutation(annovar_file)
+#' parsed_annovar
+#'
+#' # the new column has easy to use amino acid mutations
+#' parsed_annovar$aa_mod
+#'
+#' 
 #' @importFrom magrittr %>% %<>%
 #' @export parse_annovar_mutation
 parse_annovar_mutation <- function(anno_tib) {

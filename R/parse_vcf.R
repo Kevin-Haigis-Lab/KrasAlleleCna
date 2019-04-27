@@ -1,13 +1,80 @@
 #' Parse a VCF file
 #'
-#' @description Parse the read-depth information of a VCF file.
+#' @description Parse the read-depth information of a VCF file produced by
+#'     mpileup
 #'
 #' @param fname path to the file
 #'
 #' @return a tibble
 #'
 #' @examples
-#' # TODO
+#' \dontrun{
+#' # head of the VCF file
+#' #> ##fileformat=VCFv4.2
+#' #> ##FILTER=<ID=PASS,Description="All filters passed">
+#' #> ##bcftoolsVersion=1.9+htslib-1.9
+#' #> ##bcftoolsCommand=mpileup -Ov --annotate INFO/AD,FORMAT/AD,FORMAT/DP ...
+#' #> ##reference=file:///n/no_backup2/dbmi/park/jc604/databases/reference_...
+#' #> ##contig=<ID=chr1,length=248956422>
+#' #> ##contig=<ID=chr2,length=242193529>
+#' #> ##contig=<ID=chr3,length=198295559>
+#' #> ##contig=<ID=chr4,length=190214555>
+#' #> ##contig=<ID=chr5,length=181538259>
+#' #> ##contig=<ID=chr6,length=170805979>
+#' #> ##contig=<ID=chr7,length=159345973>
+#' #> ##contig=<ID=chr8,length=145138636>
+#' #> ##contig=<ID=chr9,length=138394717>
+#' #> ##contig=<ID=chr10,length=133797422>
+#' #> ##contig=<ID=chr11,length=135086622>
+#' #> ##contig=<ID=chr12,length=133275309>
+#' #> ##contig=<ID=chr13,length=114364328>
+#' #> ##contig=<ID=chr14,length=107043718>
+#' #> ##contig=<ID=chr15,length=101991189>
+#' #> ##contig=<ID=chr16,length=90338345>
+#' #> ##contig=<ID=chr17,length=83257441>
+#' #> ##contig=<ID=chr18,length=80373285>
+#' #> ##contig=<ID=chr19,length=58617616>
+#' #> ##contig=<ID=chr20,length=64444167>
+#' #> ##contig=<ID=chr21,length=46709983>
+#' #> ##contig=<ID=chr22,length=50818468>
+#' #> ##contig=<ID=chrX,length=156040895>
+#' #> ##contig=<ID=chrY,length=57227415>
+#' #> ##contig=<ID=chrM,length=16569>
+#' #> ##contig=<ID=chr1_KI270706v1_random,length=175055>
+#' #> ##contig=<ID=chr1_KI270707v1_random,length=32032>
+#' #> ##contig=<ID=chr1_KI270708v1_random,length=127682>
+#' #> ...
+#' #> ##INFO=<ID=QS,Number=R,Type=Float,Description="Auxiliary tag used for calling">
+#' #> ##FORMAT=<ID=PL,Number=G,Type=Integer,Description="List of Phred-scaled genotype likelihoods">
+#' #> ##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Number of high-quality bases">
+#' #> ##FORMAT=<ID=AD,Number=R,Type=Integer,Description="Allelic depths">
+#' #> ##INFO=<ID=AD,Number=R,Type=Integer,Description="Total allelic depths">
+#' #> #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  TCGA-FZ-5924-01A-13D-1609-08
+#' #> chr12   25202434        .       A       <*>     0       .       DP=1;AD=1,0;I16=1,0,0,0,29,841,0,0,60,3600,0,0,0,0,0,0;QS=1,0;MQ0F=0    PL:DP:AD        0,3,29:1:1,0
+#' #> chr12   25202435        .       G       <*>     0       .       DP=1;AD=1,0;I16=1,0,0,0,31,961,0,0,60,3600,0,0,1,1,0,0;QS=1,0;MQ0F=0    PL:DP:AD        0,3,31:1:1,0
+#' #> chr12   25202436        .       C       <*>     0       .       DP=1;AD=1,0;I16=1,0,0,0,28,784,0,0,60,3600,0,0,2,4,0,0;QS=1,0;MQ0F=0    PL:DP:AD        0,3,28:1:1,0
+#' #> chr12   25202437        .       A       <*>     0       .       DP=1;AD=1,0;I16=1,0,0,0,30,900,0,0,60,3600,0,0,3,9,0,0;QS=1,0;MQ0F=0    PL:DP:AD        0,3,30:1:1,0
+#' #> chr12   25202438        .       G       <*>     0       .       DP=1;AD=1,0;I16=1,0,0,0,34,1156,0,0,60,3600,0,0,4,16,0,0;QS=1,0;MQ0F=0  PL:DP:AD        0,3,34:1:1,0
+#' #> chr12   25202439        .       G       <*>     0       .       DP=1;AD=1,0;I16=1,0,0,0,33,1089,0,0,60,3600,0,0,5,25,0,0;QS=1,0;MQ0F=0  PL:DP:AD        0,3,33:1:1,0
+#' #> ...
+#'
+#' parse_vcf("example.vcf")
+#' #> # A tibble: 8,917 x 7
+#' #>       start ref   alt    qual read_info    num_high_qual_bas… allelic_depths
+#' #>       <dbl> <chr> <chr> <dbl> <chr>        <chr>              <chr>
+#' #>  1 25202434 A     <*>       0 0,3,29:1:1,0 1                  1
+#' #>  2 25202435 G     <*>       0 0,3,31:1:1,0 1                  1
+#' #>  3 25202436 C     <*>       0 0,3,28:1:1,0 1                  1
+#' #>  4 25202437 A     <*>       0 0,3,30:1:1,0 1                  1
+#' #>  5 25202438 G     <*>       0 0,3,34:1:1,0 1                  1
+#' #>  6 25202439 G     <*>       0 0,3,33:1:1,0 1                  1
+#' #>  7 25202440 G     <*>       0 0,3,34:1:1,0 1                  1
+#' #>  8 25202441 G     <*>       0 0,3,33:1:1,0 1                  1
+#' #>  9 25202442 A     <*>       0 0,3,32:1:1,0 1                  1
+#' #> 10 25202443 T     <*>       0 0,3,31:1:1,0 1                  1
+#' #> # … with 8,907 more rows
+#'
+#' }
 #'
 #' @importFrom stringr str_split_fixed str_remove_all
 #' @export parse_vcf

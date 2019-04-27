@@ -1,6 +1,6 @@
 template:
   params:
-    bootswatch: yeti
+    bootswatch: flatly
 
 
 navbar:
@@ -27,7 +27,7 @@ navbar:
     - icon: fab fa-github fa-lg
       text: "GitHub"
       href: https://github.com/jhrcook/KrasAlleleCna
-    - icon: fas fa-dna fa-lg
+    - icon: fas fa-flask fa-lg
       text: "Haigis Lab"
       href: https://www.haigislab.org
 
